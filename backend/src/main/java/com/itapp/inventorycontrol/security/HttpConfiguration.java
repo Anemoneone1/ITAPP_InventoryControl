@@ -35,6 +35,7 @@ public class HttpConfiguration {
                 .requestMatchers(HttpMethod.POST, APIVersion.current + "/user/logout").authenticated()
                 .requestMatchers(HttpMethod.POST, APIVersion.current + "/user/employee").authenticated()
                 .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/user/employee").authenticated()
+                .requestMatchers(HttpMethod.GET, APIVersion.current + "/user").authenticated()
 
                 // WarehouseController
                 .requestMatchers(HttpMethod.GET, APIVersion.current + "/warehouse").authenticated()

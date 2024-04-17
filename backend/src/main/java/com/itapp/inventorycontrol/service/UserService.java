@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -53,6 +54,11 @@ public class UserService {
 
     public User getByIdOrThrow(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new ICException(ICErrorType.IC_201));
+    }
+
+    public List<User> getAll(){
+        User signedUser = signedInUsernameGetter.getUser();
+        return userRepository.findAllByCompanyId(signedUser.getCompany().getId());
     }
 
     private void validateManager(User manager){

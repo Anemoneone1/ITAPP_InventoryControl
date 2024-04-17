@@ -19,6 +19,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping(APIVersion.current + "/user")
@@ -74,4 +77,14 @@ public class UserController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping()
+    public ResponseEntity<List<UserResponse>> getAllEmployees() {
+        return new ResponseEntity<>(userService.getAll().stream()
+                .map(userMapper::userToResponse)
+                .collect(Collectors.toList()),
+                HttpStatus.OK);
+    }
+
+    //TODO: add endpoint to change roles of employees
 }
