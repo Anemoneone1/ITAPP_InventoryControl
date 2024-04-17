@@ -1,5 +1,6 @@
 package com.itapp.inventorycontrol.security;
 
+import com.itapp.inventorycontrol.controller.APIVersion;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +28,10 @@ public class HttpConfiguration {
                 .requestMatchers(HttpMethod.GET, "/v3/api-docs/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll()
                 .requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
+
+                .requestMatchers(HttpMethod.POST, APIVersion.current + "/user/register").permitAll()
+                .requestMatchers(HttpMethod.POST, APIVersion.current + "/user/login").permitAll()
+                .requestMatchers(HttpMethod.POST, APIVersion.current + "/user/logout").authenticated()
 
                 .anyRequest().denyAll()
         );
