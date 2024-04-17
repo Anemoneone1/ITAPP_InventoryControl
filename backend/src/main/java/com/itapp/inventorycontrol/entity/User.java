@@ -26,6 +26,9 @@ public class User implements UserDetails {
     @JoinColumn(name = "company_id", nullable = false)
     private Company company;
 
+    @Column(name = "registered_by")
+    private Long registeredBy;
+
     @Column(name = "name", nullable = false)
     private String name;
 

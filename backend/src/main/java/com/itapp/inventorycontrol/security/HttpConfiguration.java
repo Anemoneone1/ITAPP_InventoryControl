@@ -29,10 +29,12 @@ public class HttpConfiguration {
                 .requestMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll()
                 .requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
 
-                // AuthenticationController
-                .requestMatchers(HttpMethod.POST, APIVersion.current + "/user/register").permitAll()
+                // UserController
+                .requestMatchers(HttpMethod.POST, APIVersion.current + "/user/manager").permitAll()
                 .requestMatchers(HttpMethod.POST, APIVersion.current + "/user/login").permitAll()
                 .requestMatchers(HttpMethod.POST, APIVersion.current + "/user/logout").authenticated()
+                .requestMatchers(HttpMethod.POST, APIVersion.current + "/user/employee").authenticated()
+                .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/user/employee").authenticated()
 
                 // WarehouseController
                 .requestMatchers(HttpMethod.GET, APIVersion.current + "/warehouse").authenticated()

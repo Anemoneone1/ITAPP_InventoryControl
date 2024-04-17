@@ -16,6 +16,7 @@ public enum ICErrorType {
 
     // users
     IC_201("User not found", HttpStatus.NOT_FOUND),
+    IC_202("Not enough privileges", HttpStatus.FORBIDDEN),
 
     // warehouse
     IC_301("Warehouse not found", HttpStatus.NOT_FOUND),

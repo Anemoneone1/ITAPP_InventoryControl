@@ -1,11 +1,14 @@
 package com.itapp.inventorycontrol.controller;
 
+import com.itapp.inventorycontrol.dto.request.EmployeeCreateRequest;
+import com.itapp.inventorycontrol.dto.request.EmployeeDeleteRequest;
 import com.itapp.inventorycontrol.dto.request.LoginRequest;
 import com.itapp.inventorycontrol.dto.request.UserCreateRequest;
 import com.itapp.inventorycontrol.dto.response.TokenResponse;
+import com.itapp.inventorycontrol.dto.response.UserResponse;
 import com.itapp.inventorycontrol.entity.Company;
 import com.itapp.inventorycontrol.entity.User;
-import com.itapp.inventorycontrol.entity.UserRole;
+import com.itapp.inventorycontrol.mapper.UserMapper;
 import com.itapp.inventorycontrol.service.CompanyService;
 import com.itapp.inventorycontrol.service.TokenService;
 import com.itapp.inventorycontrol.service.UserService;
@@ -13,42 +16,48 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping(APIVersion.current + "/user")
-public class AuthenticationController {
+public class UserController {
     private final CompanyService companyService;
     private final UserService userService;
     private final TokenService tokenService;
-    private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
-    @PostMapping("/register")
-    public ResponseEntity<TokenResponse> registerUserAndCompany(@RequestBody UserCreateRequest request) {
+    @PostMapping("/manager")
+    public ResponseEntity<TokenResponse> registerManager(@RequestBody UserCreateRequest request) {
         Company company = companyService.create(Company.builder()
                 .name(request.getCompanyName())
                 .build());
-        userService.create(User.builder()
-                .company(company)
-                .name(request.getName())
-                .surname(request.getSurname())
-                .phone(request.getPhone())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(UserRole.MANAGER)
-                .build());
+        User newUser = userMapper.requestToUser(request);
+        newUser.setCompany(company);
+        userService.create(newUser);
 
         return new ResponseEntity<>(
                 new TokenResponse(
                         tokenService.generateToken(request.getEmail(), request.getPassword())
                 ),
                 HttpStatus.OK);
+    }
+
+    @PostMapping("/employee")
+    public ResponseEntity<UserResponse> registerEmployee(@RequestBody EmployeeCreateRequest request) {
+        User newUser = userService.createEmployee(userMapper.requestToUser(request));
+
+        return new ResponseEntity<>(
+                userMapper.userToResponse(newUser),
+                HttpStatus.OK);
+    }
+
+    @DeleteMapping("/employee")
+    public ResponseEntity<UserResponse> removeEmployee(@RequestBody EmployeeDeleteRequest request) {
+        userService.removeEmployee(request.getEmployeeId());
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/login")
