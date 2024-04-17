@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventory Management Dashboard</title>
+  <link rel="stylesheet" href="../styles/styles.css"> <!-- Link to the external CSS file -->
+</head>
+<body>
+<header>
+  <h1>Inventory Management System</h1>
+  <p>Welcome, John Doe</p> <!-- Replace with employee name/surname -->
+</header>
+
+<nav>
+  <ul>
+    <li><a href="#">Warehouses</a></li>
+    <li><a href="employee_list.html">Employees List</a></li> <!-- Link to the employee list page -->
+    <li><a href="#">Product List</a></li>
+    <li><a href="#" onclick="loadWarehousePopup()">Add Warehouse</a></li> <!-- Call loadWarehousePopup() on click -->
+    <li><a href="#" onclick="loadEmployeePopup()">Add Employee</a></li> <!-- Call loadEmployeePopup() on click -->
+    <li><a href="#">Item List</a></li>
+    <li><a href="#">Compliances List</a></li>
+    <li><a href="#">Warnings List</a></li>
+  </ul>
+</nav>
+
+<main>
+  <h2>Warehouse List</h2>
+  <ul>
+    <!-- Mockup list of warehouses -->
+    <li>Warehouse A</li>
+    <li>Warehouse B</li>
+    <li>Warehouse C</li>
+  </ul>
+
+  <div id="warehousePopupContainer" class="popup">
+    <!-- Warehouse creation popup content will be loaded here -->
+  </div>
+
+  <div id="employeePopupContainer" class="popup">
+    <!-- Employee creation popup content will be loaded here -->
+  </div>
+</main>
+
+<footer>
+  &copy; 2024 Your Company Name
+</footer>
+
+<script>
+  function loadWarehousePopup() {
+    var warehousePopupContainer = document.getElementById("warehousePopupContainer");
+    warehousePopupContainer.innerHTML = ''; // Clear any previous content
+    fetch('warehouse_creation_popup.html')
+            .then(response => response.text())
+            .then(data => {
+              warehousePopupContainer.innerHTML = data; // Load popup content
+              warehousePopupContainer.classList.add('show'); // Show the popup
+            })
+            .catch(error => console.error('Error loading warehouse popup:', error));
+  }
+
+  function loadEmployeePopup() {
+    var employeePopupContainer = document.getElementById("employeePopupContainer");
+    employeePopupContainer.innerHTML = ''; // Clear any previous content
+    fetch('employee_creation_popup.html')
+            .then(response => response.text())
+            .then(data => {
+              employeePopupContainer.innerHTML = data; // Load popup content
+              employeePopupContainer.classList.add('show'); // Show the popup
+            })
+            .catch(error => console.error('Error loading employee popup:', error));
+  }
+</script>
+</body>
+</html>
