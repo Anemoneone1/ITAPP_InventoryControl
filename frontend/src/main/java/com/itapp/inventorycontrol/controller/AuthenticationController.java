@@ -1,24 +1,33 @@
 package com.itapp.inventorycontrol.controller;
 
-import com.itapp.inventorycontrol.dto.response.TokenResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @AllArgsConstructor
-@RestController
-@RequestMapping(APIVersion.current + "/user")
+@Controller
 public class AuthenticationController {
-
-    @PostMapping("/register")
-    public ResponseEntity<TokenResponse> registerUserAndCompany() {
-        return null;
+    @GetMapping("/")
+    public String test(Model model, HttpSession session) {
+        String a = (String) session.getAttribute("test");
+        if (a != null) {
+            model.addAttribute("testAttr", a);
+        } else {
+            model.addAttribute("testAttr", "no session");
+        }
+        return "test";
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<TokenResponse> login() {
-        return null;
+    @PostMapping("/test")
+    public String postTest(HttpServletRequest request) {
+        String a = (String) request.getSession().getAttribute("test");
+        if (a == null) {
+            request.getSession().setAttribute("test", "aaa");
+        }
+        return "redirect:/";
     }
 }
