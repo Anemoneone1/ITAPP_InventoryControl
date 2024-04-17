@@ -29,9 +29,16 @@ public class HttpConfiguration {
                 .requestMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll()
                 .requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
 
+                // AuthenticationController
                 .requestMatchers(HttpMethod.POST, APIVersion.current + "/user/register").permitAll()
                 .requestMatchers(HttpMethod.POST, APIVersion.current + "/user/login").permitAll()
                 .requestMatchers(HttpMethod.POST, APIVersion.current + "/user/logout").authenticated()
+
+                // WarehouseController
+                .requestMatchers(HttpMethod.GET, APIVersion.current + "/warehouse").authenticated()
+                .requestMatchers(HttpMethod.POST, APIVersion.current + "/warehouse").authenticated()
+                .requestMatchers(HttpMethod.PUT, APIVersion.current + "/warehouse").authenticated()
+                .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/warehouse").authenticated()
 
                 .anyRequest().denyAll()
         );

@@ -24,7 +24,7 @@ public class SecurityConfig {
     @Bean
     @Transactional(readOnly = true)
     public UserDetailsService userDetailsService() {
-        return username -> userRepository.findByEmail(username).orElseThrow(() -> new ICException(ICErrorType.IC_202));
+        return username -> userRepository.findByEmail(username).orElseThrow(() -> new ICException(ICErrorType.IC_201));
     }
 
     @Bean

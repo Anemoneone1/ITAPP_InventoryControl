@@ -15,7 +15,11 @@ public enum ICErrorType {
     IC_102("Bad credentials", HttpStatus.BAD_REQUEST),
 
     // users
-    IC_202("User not found", HttpStatus.BAD_REQUEST);
+    IC_201("User not found", HttpStatus.NOT_FOUND),
+
+    // warehouse
+    IC_301("Warehouse not found", HttpStatus.NOT_FOUND),
+    IC_302("Not enough free space at warehouse", HttpStatus.NOT_FOUND);
 
     private final String description;
     private final HttpStatus status;
