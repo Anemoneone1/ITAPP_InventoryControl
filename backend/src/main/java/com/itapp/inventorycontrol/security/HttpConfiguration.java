@@ -51,6 +51,11 @@ public class HttpConfiguration {
                 .requestMatchers(HttpMethod.POST, APIVersion.current + "/storage-condition").authenticated()
                 .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/storage-condition").authenticated()
 
+                // ComplianceController
+                .requestMatchers(HttpMethod.GET, APIVersion.current + "/compliance").authenticated()
+                .requestMatchers(HttpMethod.POST, APIVersion.current + "/compliance").authenticated()
+                .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/compliance").authenticated()
+
                 .anyRequest().denyAll()
         );
 
