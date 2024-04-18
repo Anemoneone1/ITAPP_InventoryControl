@@ -43,6 +43,9 @@ public class HttpConfiguration {
                 .requestMatchers(HttpMethod.PUT, APIVersion.current + "/warehouse").authenticated()
                 .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/warehouse").authenticated()
 
+                // DashboardController
+                .requestMatchers(HttpMethod.GET, APIVersion.current + "/dashboard").authenticated()
+
                 .anyRequest().denyAll()
         );
 

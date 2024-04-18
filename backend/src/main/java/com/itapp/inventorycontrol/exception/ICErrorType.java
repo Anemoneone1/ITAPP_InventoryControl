@@ -20,7 +20,13 @@ public enum ICErrorType {
 
     // warehouse
     IC_301("Warehouse not found", HttpStatus.NOT_FOUND),
-    IC_302("Not enough free space at warehouse", HttpStatus.NOT_FOUND);
+    IC_302("Not enough free space at warehouse", HttpStatus.NOT_FOUND),
+
+    // item
+    IC_401("Item not found", HttpStatus.NOT_FOUND),
+
+    // company
+    IC_501("Company not found", HttpStatus.NOT_FOUND);
 
     private final String description;
     private final HttpStatus status;
