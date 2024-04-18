@@ -31,7 +31,7 @@ public class UserController {
 
 
 
-        ResponseEntity<TokenDTO> responseEntity = restTemplate.exchange("http://andrii.demydeni.keenetic.name:8081/v1/user/employee", HttpMethod.POST, requestEntity, TokenDTO.class);
+        ResponseEntity<TokenDTO> responseEntity = restTemplate.exchange("http://localhost:8081/v1/user/employee", HttpMethod.POST, requestEntity, TokenDTO.class);
 
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
             return "redirect:/dashboard";

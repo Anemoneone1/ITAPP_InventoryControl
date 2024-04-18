@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Item List</title>
-  <link rel="stylesheet" href="../static/styles/styles.css"> <!-- Link to the external CSS file -->
+  <link rel="stylesheet" href="/styles/styles.css"> <!-- Link to the external CSS file -->
 </head>
 <body>
 <header>
@@ -31,37 +31,39 @@
 </header>
 
 <main>
-  <h2>Item List</h2>
-  <div id="storageSpaces">
-    <!-- Each storage space will have its own section -->
-    <div class="storageSpace">
-      <h3>Storage Space A</h3>
-      <p>Total Space: 1000 sqft</p>
-      <p>Space Used: 700 sqft</p>
-      <p>Storage Conditions: Dry, Temperature controlled</p>
-      <hr>
-      <h4>Containers</h4>
-      <div class="containers">
-        <!-- Each container in the storage space will have its own section -->
-        <div class="container">
-          <h5>Container 1</h5>
-          <p>Total Space: 100 sqft</p>
-          <p>Space Used: 80 sqft</p>
-          <p>Storage Conditions: Dry</p>
-          <hr>
-          <h6>Items</h6>
-          <ul class="items">
-            <!-- Each item in the container will have its own list item -->
-            <li>Item 1</li>
-            <li>Item 2</li>
-            <li>Item 3</li>
-            <!-- Add more items as needed -->
-          </ul>
-        </div>
-        <!-- Add more containers in the storage space as needed -->
-      </div>
-    </div>
-    <!-- Add more storage spaces as needed -->
+  <h1>Items List</h1>
+  <table>
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Expiration Date</th>
+      <th>Weight</th>
+      <th>Container</th>
+      <th>Warehouse</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Iterate over the list of items -->
+    <tr th:each="item : ${storageItemListDTO}">
+      <td th:text="${item.storageItemName}"></td>
+      <td th:text="${item.expirationDate}"></td>
+      <td th:text="${item.weight}"></td>
+      <td th:text="${item.containerName}"></td>
+      <td th:text="${item.warehouseName}"></td>
+      <td>
+        <!-- Form for delete button -->
+        <form th:action="@{'/delete_item/' + ${item.id}}" method="post">
+          <button type="submit">Delete</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- Button for creating new items -->
+  <div>
+    <a th:href="@{/create_item}"><button>Create New Item</button></a>
   </div>
 </main>
 

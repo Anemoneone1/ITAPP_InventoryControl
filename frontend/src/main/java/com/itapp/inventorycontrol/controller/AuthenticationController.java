@@ -41,7 +41,7 @@ public class AuthenticationController {
         HttpEntity<UserLoginDTO> requestEntity = new HttpEntity<>(userLoginDTO);
 
 //        ResponseEntity<TokenDTO> responseEntity = restTemplate.exchange("http://localhost:8081/v1/user/login", HttpMethod.POST, requestEntity, TokenDTO.class);
-        ResponseEntity<TokenDTO> responseEntity = restTemplate.exchange("http://andrii.demydeni.keenetic.name:8081/v1/user/login", HttpMethod.POST, requestEntity, TokenDTO.class);
+        ResponseEntity<TokenDTO> responseEntity = restTemplate.exchange("http://localhost:8081/v1/user/login", HttpMethod.POST, requestEntity, TokenDTO.class);
 
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
             request.getSession().setAttribute("token", responseEntity.getBody().getToken());
@@ -67,7 +67,7 @@ public class AuthenticationController {
         HttpEntity<RegisterDTO> requestEntity = new HttpEntity<>(registerDTO);
 
 //        ResponseEntity<TokenDTO> responseEntity = restTemplate.exchange("http://localhost:8081/v1/user/login", HttpMethod.POST, requestEntity, TokenDTO.class);
-        ResponseEntity<TokenDTO> responseEntity = restTemplate.exchange("http://andrii.demydeni.keenetic.name:8081/v1/user/manager", HttpMethod.POST, requestEntity, TokenDTO.class);
+        ResponseEntity<TokenDTO> responseEntity = restTemplate.exchange("http://localhost:8081/v1/user/manager", HttpMethod.POST, requestEntity, TokenDTO.class);
 
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
             request.getSession().setAttribute("token", responseEntity.getBody().getToken());
