@@ -50,7 +50,7 @@ public class WarehouseController {
 
     @DeleteMapping
     public ResponseEntity<Void> delete(@RequestBody WarehouseDeleteRequest request) {
-        warehouseService.delete(request.getId());
+        warehouseService.delete(request.getWarehouseId());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
