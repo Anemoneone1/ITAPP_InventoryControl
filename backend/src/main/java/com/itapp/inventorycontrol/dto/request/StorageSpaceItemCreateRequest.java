@@ -12,6 +12,6 @@ import java.util.Date;
 public class StorageSpaceItemCreateRequest {
     private Long storageSpaceId;
     private Long itemId;
-    private Date creationDate;
+    private String creationDate;
     private String batchNumber;
 }
