@@ -7,11 +7,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class RegisterDTO {
-    private String companyName;
+public class CreateWarehouseDTO {
     private String name;
-    private String surname;
-    private String phone;
-    private String password;
-    private String email;
+    private Double squareSpace;
+    private String address;
 }

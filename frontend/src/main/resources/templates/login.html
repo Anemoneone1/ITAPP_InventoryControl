@@ -17,7 +17,7 @@
       text-align: center;
     }
   </style>
-  <link rel="stylesheet" href="../styles/styles.css"> <!-- Link to the external CSS file -->
+  <link rel="stylesheet" href="/styles/styles.css"> <!-- Link to the external CSS file -->
 </head>
 <body>
 <div class="container">
@@ -41,7 +41,7 @@
   </form>
 
 
-  <button onclick="redirectToRegistration()">Register</button>
+  <a th:href="@{/auth/register}"><button>Register</button></a>
 </div>
 
 <script>
@@ -76,10 +76,6 @@
     return valid;
   }
 
-  function redirectToRegistration() {
-    // Redirect the user to the registration page
-    window.location.href = "registration.html";
-  }
 </script>
 </body>
 </html>
