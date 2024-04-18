@@ -5,6 +5,7 @@ import com.itapp.inventorycontrol.dto.request.WarehouseEditRequest;
 import com.itapp.inventorycontrol.dto.response.WarehouseResponse;
 import com.itapp.inventorycontrol.entity.Warehouse;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper
 public interface WarehouseMapper {
@@ -12,5 +13,6 @@ public interface WarehouseMapper {
 
     Warehouse requestToWarehouse(WarehouseEditRequest request);
 
+    @Mapping(target = "takenSpace", expression = "java(warehouse.getSquareSpace() - warehouse.getFreeSpace())")
     WarehouseResponse warehouseToResponse(Warehouse warehouse);
 }
