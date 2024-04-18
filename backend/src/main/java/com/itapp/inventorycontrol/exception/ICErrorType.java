@@ -32,7 +32,10 @@ public enum ICErrorType {
     IC_601("Storage condition not found", HttpStatus.NOT_FOUND),
 
     // compliance
-    IC_701("Compliance not found", HttpStatus.NOT_FOUND);
+    IC_701("Compliance not found", HttpStatus.NOT_FOUND),
+
+    // storage space
+    IC_801("Storage space not found", HttpStatus.NOT_FOUND);
 
     private final String description;
     private final HttpStatus status;

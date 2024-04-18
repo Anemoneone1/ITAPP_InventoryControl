@@ -2,6 +2,8 @@ package com.itapp.inventorycontrol.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Set;
 
@@ -48,10 +50,12 @@ public class StorageSpace {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(mappedBy = "storageSpace")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<StorageSpaceItem> items;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(mappedBy = "storageSpace")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<StorageConditionStorageSpace> storageConditions;
 }

@@ -62,6 +62,11 @@ public class HttpConfiguration {
                 .requestMatchers(HttpMethod.PUT, APIVersion.current + "/item").authenticated()
                 .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/item").authenticated()
 
+                // StorageSpaceController
+                .requestMatchers(HttpMethod.GET, APIVersion.current + "/storage").authenticated()
+                .requestMatchers(HttpMethod.POST, APIVersion.current + "/storage").authenticated()
+                .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/storage").authenticated()
+
                 .anyRequest().denyAll()
         );
 
