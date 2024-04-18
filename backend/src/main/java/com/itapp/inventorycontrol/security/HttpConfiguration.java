@@ -56,6 +56,12 @@ public class HttpConfiguration {
                 .requestMatchers(HttpMethod.POST, APIVersion.current + "/compliance").authenticated()
                 .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/compliance").authenticated()
 
+                // ItemController
+                .requestMatchers(HttpMethod.GET, APIVersion.current + "/item").authenticated()
+                .requestMatchers(HttpMethod.POST, APIVersion.current + "/item").authenticated()
+                .requestMatchers(HttpMethod.PUT, APIVersion.current + "/item").authenticated()
+                .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/item").authenticated()
+
                 .anyRequest().denyAll()
         );
 

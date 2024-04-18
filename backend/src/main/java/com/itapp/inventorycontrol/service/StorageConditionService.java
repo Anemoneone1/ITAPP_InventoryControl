@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @Service
@@ -38,6 +39,10 @@ public class StorageConditionService {
         validateUserOwnsStorageCondition(user, storageCondition);
 
         storageConditionRepository.deleteById(id);
+    }
+
+    public Set<StorageCondition> getAllByIds(List<Long> storageConditionIds, Long companyId) {
+        return storageConditionRepository.findAllByCompanyIdAndIdIn(companyId, storageConditionIds);
     }
 
     private void validateUserOwnsStorageCondition(User user, StorageCondition storageCondition) {

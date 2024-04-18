@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @Service
@@ -38,6 +39,10 @@ public class ComplianceService {
         validateUserOwnsCompliance(user, compliance);
 
         complianceRepository.deleteById(complianceId);
+    }
+
+    public Set<Compliance> getAllByIds(List<Long> complianceIds, Long companyId) {
+        return complianceRepository.findAllByCompanyIdAndIdIn(companyId, complianceIds);
     }
 
     private void validateUserOwnsCompliance(User user, Compliance compliance) {
