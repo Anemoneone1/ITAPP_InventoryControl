@@ -46,6 +46,11 @@ public class HttpConfiguration {
                 // DashboardController
                 .requestMatchers(HttpMethod.GET, APIVersion.current + "/dashboard").authenticated()
 
+                // StorageConditionController
+                .requestMatchers(HttpMethod.GET, APIVersion.current + "/storage-condition").authenticated()
+                .requestMatchers(HttpMethod.POST, APIVersion.current + "/storage-condition").authenticated()
+                .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/storage-condition").authenticated()
+
                 .anyRequest().denyAll()
         );
 

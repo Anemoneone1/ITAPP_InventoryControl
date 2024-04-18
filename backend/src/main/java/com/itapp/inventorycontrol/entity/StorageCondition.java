@@ -7,8 +7,8 @@ import lombok.*;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "storage_conditions")
-public class StorageConditions {
+@Table(name = "storage_condition")
+public class StorageCondition {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -49,5 +49,5 @@ public class Item {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(mappedBy = "item")
-    private Set<StorageConditionsItem> storageConditions;
+    private Set<StorageConditionItem> storageConditions;
 }

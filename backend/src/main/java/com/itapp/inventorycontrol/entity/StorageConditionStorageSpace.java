@@ -7,8 +7,8 @@ import lombok.*;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "storage_conditions_item")
-public class StorageConditionsItem {
+@Table(name = "storage_condition_storage_space")
+public class StorageConditionStorageSpace {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,11 +17,11 @@ public class StorageConditionsItem {
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "storage_condition_id", nullable = false)
-    private StorageConditions storageConditions;
+    private StorageCondition storageCondition;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_id", nullable = false)
-    private Item item;
+    @JoinColumn(name = "storage_space_id", nullable = false)
+    private StorageSpace storageSpace;
 }

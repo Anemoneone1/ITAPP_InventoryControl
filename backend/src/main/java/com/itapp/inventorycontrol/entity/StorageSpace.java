@@ -53,5 +53,5 @@ public class StorageSpace {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(mappedBy = "storageSpace")
-    private Set<StorageConditionsStorageSpace> storageConditions;
+    private Set<StorageConditionStorageSpace> storageConditions;
 }

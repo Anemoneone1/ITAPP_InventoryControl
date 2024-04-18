@@ -26,7 +26,10 @@ public enum ICErrorType {
     IC_401("Item not found", HttpStatus.NOT_FOUND),
 
     // company
-    IC_501("Company not found", HttpStatus.NOT_FOUND);
+    IC_501("Company not found", HttpStatus.NOT_FOUND),
+
+    // storage condition
+    IC_601("Storage condition not found", HttpStatus.NOT_FOUND);
 
     private final String description;
     private final HttpStatus status;
