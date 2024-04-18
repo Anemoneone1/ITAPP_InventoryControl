@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Item List</title>
+  <link rel="stylesheet" href="/styles/styles.css"> <!-- Link to the external CSS file -->
+</head>
+<body>
+<header>
+  <h1>Inventory Management System</h1>
+  <div id="sorting">
+    <label for="sort">Sort By:</label>
+    <select id="sort">
+      <option value="name">Name</option>
+      <option value="size">Size</option>
+      <option value="weight">Weight</option>
+      <option value="expiry_date">Expiry Date</option>
+    </select>
+  </div>
+  <div id="warehouseFilter">
+    <label for="filter">Filter by Warehouse:</label>
+    <select id="filter">
+      <option value="all">All Warehouses</option>
+      <option value="warehouse1">Warehouse 1</option>
+      <option value="warehouse2">Warehouse 2</option>
+      <option value="warehouse3">Warehouse 3</option>
+      <!-- Add more warehouse options as needed -->
+    </select>
+  </div>
+</header>
+
+<main>
+  <h1>Items List</h1>
+  <table>
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Expiration Date</th>
+      <th>Weight</th>
+      <th>Container</th>
+      <th>Warehouse</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Iterate over the list of items -->
+    <tr th:each="item : ${storageItemListDTO}">
+      <td th:text="${item.storageItemName}"></td>
+      <td th:text="${item.expirationDate}"></td>
+      <td th:text="${item.weight}"></td>
+      <td th:text="${item.containerName}"></td>
+      <td th:text="${item.warehouseName}"></td>
+      <td>
+        <!-- Form for delete button -->
+        <form th:action="@{'/delete_item/' + ${item.id}}" method="post">
+          <button type="submit">Delete</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- Button for creating new items -->
+  <div>
+    <a th:href="@{/create_item}"><button>Create New Item</button></a>
+  </div>
+</main>
+
+<footer>
+  &copy; 2024 Your Company Name
+</footer>
+</body>
+</html>

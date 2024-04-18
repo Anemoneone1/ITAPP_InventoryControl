@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration Page</title>
+  <style>
+    .error {
+      color: red;
+    }
+  </style>
+  <link rel="stylesheet" href="../static/styles/styles.css"> <!-- Link to the external CSS file -->
+</head>
+<body>
+<header>
+  <h1>Inventory Management System</h1>
+</header>
+<h2>Registration</h2>
+<form id="registrationForm" th:action="@{/auth/register}" th:object="${registerDTO}" method="post" onsubmit="return validateForm()">
+  <div>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" th:field="*{email}">
+    <span id="emailError" class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+  </div>
+  <div>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" th:field="*{password}">
+    <span id="passwordError" class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+  </div>
+  <div>
+    <label for="passwordRepeat">Repeat Password:</label>
+    <input type="password" id="passwordRepeat" name="passwordRepeat">
+    <span id="passwordRepeatError" class="error"></span>
+  </div>
+  <div>
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" th:field="*{name}">
+    <span id="nameError" class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+  </div>
+  <div>
+    <label for="surname">Surname:</label>
+    <input type="text" id="surname" name="surname" th:field="*{surname}">
+    <span id="surnameError" class="error" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></span>
+  </div>
+  <div>
+    <label for="phone">Phone:</label>
+    <input type="text" id="phone" name="surname" th:field="*{phone}">
+    <span id="phoneError" class="error" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span>
+  </div>
+  <div>
+    <label for="company">Company Name:</label>
+    <input type="text" id="company" name="company" th:field="*{companyName}">
+    <span id="companyError" class="error" th:if="${#fields.hasErrors('companyName')}" th:errors="*{companyName}"></span>
+  </div>
+  <button type="submit">Register</button>
+</form>
+
+<script>
+  function validateForm() {
+    // Reset error messages
+    document.getElementById("emailError").innerHTML = "";
+    document.getElementById("passwordError").innerHTML = "";
+    document.getElementById("passwordRepeatError").innerHTML = "";
+    document.getElementById("nameError").innerHTML = "";
+    document.getElementById("surnameError").innerHTML = "";
+    document.getElementById("companyError").innerHTML = "";
+
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("password").value;
+    var passwordRepeat = document.getElementById("passwordRepeat").value;
+    var name = document.getElementById("name").value;
+    var surname = document.getElementById("surname").value;
+    var company = document.getElementById("company").value;
+    var valid = true;
+
+    // Check for empty email
+    if (email === "") {
+      document.getElementById("emailError").innerHTML = "Email is required";
+      valid = false;
+    } else {
+      // Check for valid email format using a regular expression
+      var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(email)) {
+        document.getElementById("emailError").innerHTML = "Invalid email format";
+        valid = false;
+      }
+    }
+
+    // Check for empty password
+    if (password === "") {
+      document.getElementById("passwordError").innerHTML = "Password is required";
+      valid = false;
+    }
+
+    // Check if passwords match
+    if (password !== passwordRepeat) {
+      document.getElementById("passwordRepeatError").innerHTML = "Passwords do not match";
+      valid = false;
+    }
+
+    // Check for empty name
+    if (name === "") {
+      document.getElementById("nameError").innerHTML = "Name is required";
+      valid = false;
+    }
+
+    // Check for empty surname
+    if (surname === "") {
+      document.getElementById("surnameError").innerHTML = "Surname is required";
+      valid = false;
+    }
+
+    // Check for empty company
+    if (company === "") {
+      document.getElementById("companyError").innerHTML = "Company Name is required";
+      valid = false;
+    }
+
+    return valid;
+  }
+</script>
+</body>
+</html>

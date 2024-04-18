@@ -1,33 +1,79 @@
 package com.itapp.inventorycontrol.controller;
 
+import com.itapp.inventorycontrol.dto.front.RegisterDTO;
+import com.itapp.inventorycontrol.dto.front.TokenDTO;
+import com.itapp.inventorycontrol.dto.front.UserLoginDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.client.RestTemplate;
 
 @AllArgsConstructor
 @Controller
+@RequestMapping("/auth")
 public class AuthenticationController {
-    @GetMapping("/")
-    public String test(Model model, HttpSession session) {
-        String a = (String) session.getAttribute("test");
-        if (a != null) {
-            model.addAttribute("testAttr", a);
+    private final RestTemplate restTemplate;
+
+    @GetMapping("/login")
+    public String login(Model model, HttpSession httpSession) {
+        String token = (String) httpSession.getAttribute("token");
+        if (token != null) {
+            return "redirect:/dashboard";
         } else {
-            model.addAttribute("testAttr", "no session");
+            model.addAttribute("userLoginDTO", new UserLoginDTO());
+            return "login";
         }
-        return "test";
     }
 
-    @PostMapping("/test")
-    public String postTest(HttpServletRequest request) {
-        String a = (String) request.getSession().getAttribute("test");
-        if (a == null) {
-            request.getSession().setAttribute("test", "aaa");
+    @PostMapping("/login")
+    public String login(HttpServletRequest request, @ModelAttribute("userLoginDTO") UserLoginDTO userLoginDTO) {
+
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.set("Authorization", "Basic " + encodedCredentials);
+        HttpEntity<UserLoginDTO> requestEntity = new HttpEntity<>(userLoginDTO);
+
+//        ResponseEntity<TokenDTO> responseEntity = restTemplate.exchange("http://localhost:8081/v1/user/login", HttpMethod.POST, requestEntity, TokenDTO.class);
+        ResponseEntity<TokenDTO> responseEntity = restTemplate.exchange("http://localhost:8081/v1/user/login", HttpMethod.POST, requestEntity, TokenDTO.class);
+
+        if (responseEntity.getStatusCode() == HttpStatus.OK) {
+            request.getSession().setAttribute("token", responseEntity.getBody().getToken());
+            return "redirect:/dashboard";
+        } else {
+            System.out.println("Request failed with status code: " + responseEntity.getStatusCode());
+            return "redirect:/auth/login";
         }
-        return "redirect:/";
+    }
+
+    @GetMapping("/register")
+    public String register(Model model, HttpSession httpSession) {
+        String token = (String) httpSession.getAttribute("token");
+        if (token != null) {
+            return "redirect:/dashboard";
+        }
+        model.addAttribute("registerDTO", new RegisterDTO());
+        return "register";
+    }
+
+    @PostMapping("/register")
+    public String register(@Validated @ModelAttribute("registerDTO") RegisterDTO registerDTO, HttpServletRequest request) {
+        HttpEntity<RegisterDTO> requestEntity = new HttpEntity<>(registerDTO);
+
+//        ResponseEntity<TokenDTO> responseEntity = restTemplate.exchange("http://localhost:8081/v1/user/login", HttpMethod.POST, requestEntity, TokenDTO.class);
+        ResponseEntity<TokenDTO> responseEntity = restTemplate.exchange("http://localhost:8081/v1/user/manager", HttpMethod.POST, requestEntity, TokenDTO.class);
+
+        if (responseEntity.getStatusCode() == HttpStatus.OK) {
+            request.getSession().setAttribute("token", responseEntity.getBody().getToken());
+            return "redirect:/dashboard";
+        }
+        System.out.println("Request failed with status code: " + responseEntity.getStatusCode());
+        return "redirect:/auth/register";
     }
 }

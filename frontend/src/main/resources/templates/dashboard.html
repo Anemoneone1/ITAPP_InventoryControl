@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventory Management Dashboard</title>
+  <link rel="stylesheet" href="/styles/styles.css">
+</head>
+<body>
+<header>
+  <p>Company: <span th:text="${dashboardDTO.companyName}"></span></p>
+  <p><span th:text="${dashboardDTO.userName}"></span> <span th:text="${dashboardDTO.userSurname}"></span></p>
+</header>
+
+
+<nav>
+  <ul>
+    <li><a href="#">Warehouses</a></li>
+    <li><a href="employee_list.html">Employees List</a></li> <!-- Link to the employee list page -->
+    <li><a th:href="@{/item_list}">Product List</a></li>
+    <li><a href="#" onclick="showWarehousePopup()">Add Warehouse</a></li> <!-- Call showWarehousePopup() on click -->
+    <li><a href="#" onclick="showEmployeePopup()">Add Employee</a></li>
+    <li><a href="#">Item List</a></li>
+    <li><a href="#">Compliances List</a></li>
+    <li><a href="#">Warnings List</a></li>
+  </ul>
+</nav>
+
+<main>
+  <h2>Warehouse List</h2>
+  <ul>
+    <!-- Iterate over the list of warehouses -->
+    <li th:each="warehouse : ${dashboardDTO.getWarehouses()}">
+      <!-- Warehouse details -->
+      <div>
+        <p>Name: <a th:href="@{'/warehouse/' + ${warehouse.id}}"><span th:text="${warehouse.name}"></span></a></p>
+        <p>Address: <span th:text="${warehouse.address}"></span></p>
+        <p>Taken Space: <span th:text="${warehouse.takenSpace}"></span></p>
+        <p>Total Space: <span th:text="${warehouse.squareSpace}"></span></p>
+        <!-- Delete button -->
+        <form id="warehouseDelete" th:action="@{'/delete_warehouse/' + ${warehouse.id}}" method="post">
+          <input type="hidden" name="_method" value="DELETE" />
+          <button type="submit">Delete</button>
+        </form>
+
+
+      </div>
+    </li>
+  </ul>
+
+  <!-- Include employee creation popup content -->
+  <div id="employeePopupContainer" class="popup">
+    <div class="popup-content">
+      <h2>Create Employee Account</h2>
+      <form id="employeeForm" th:action="@{/user/create_employee}" th:object="${createEmployeeDTO}" method="post" onsubmit="return validateForm()">
+        <div>
+          <label for="name">First Name:</label>
+          <input type="text" id="name" name="name" th:field="*{name}">
+          <span id="nameError" class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+        </div>
+        <div>
+          <label for="surname">Last Name:</label>
+          <input type="text" id="surname" name="surname" th:field="*{surname}">
+          <span id="surnameError" class="error" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></span>
+        </div>
+        <div>
+          <label for="phone">Phone:</label>
+          <input type="text" id="phone" name="phone" th:field="*{phone}">
+          <span id="phoneError" class="error" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span>
+        </div>
+        <div>
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" th:field="*{email}">
+          <span id="emailError" class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+        </div>
+        <div>
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password" th:field="*{password}">
+          <span id="passwordError" class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+        </div>
+        <button type="submit">Create Employee</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Include warehouse creation popup content -->
+  <div id="warehousePopupContainer" class="popup">
+    <div class="popup-content">
+      <h2>Create Warehouse</h2>
+      <form id="warehouseForm" th:action="@{/create_warehouse}" th:object="${createWarehouseDTO}" method="post" onsubmit="return validateForm()">
+        <div>
+          <label for="name">Name:</label>
+          <input type="text" id="warehouseName" name="warehouseName" th:field="*{name}">
+          <span id="warehouseNameError" class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+        </div>
+        <div>
+          <label for="address">Address:</label>
+          <input type="text" id="address" name="address" th:field="*{address}">
+          <span id="addressError" class="error" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></span>
+        </div>
+        <div>
+          <label for="space">Square Space:</label>
+          <input type="number" id="space" name="space" th:field="*{squareSpace}">
+          <span id="spaceError" class="error" th:if="${#fields.hasErrors('squareSpace')}" th:errors="*{squareSpace}"></span>
+        </div>
+        <button type="submit">Create Warehouse</button>
+      </form>
+    </div>
+  </div>
+</main>
+
+<footer>
+  &copy; 2024 Your Company Name
+</footer>
+
+<script>
+  function showWarehousePopup() {
+    var warehousePopup = document.getElementById("warehousePopupContainer");
+    warehousePopup.classList.add('show'); // Show the warehouse popup
+  }
+
+  function showEmployeePopup() {
+    var employeePopup = document.getElementById("employeePopupContainer");
+    employeePopup.classList.add('show'); // Show the employee popup
+  }
+</script>
+</body>
+</html>

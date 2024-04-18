@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee List</title>
+  <link rel="stylesheet" href="../static/styles/styles.css"> <!-- Link to the external CSS file -->
+</head>
+<body>
+<header>
+  <h1>Inventory Management System</h1>
+  <p>Welcome, John Doe</p> <!-- Replace with employee name/surname -->
+</header>
+
+<main>
+  <h2>Employee List</h2>
+  <table>
+    <thead>
+    <tr>
+      <th>Email</th>
+      <th>Name</th>
+      <th>Surname</th>
+      <th>Access Level</th>
+      <th>Change Access Level</th>
+      <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Mockup list of employees -->
+    <tr>
+      <td>employee1@example.com</td>
+      <td>John</td>
+      <td>Doe</td>
+      <td>Employee</td>
+      <td><button onclick="changeAccessLevel()">Change</button></td>
+      <td><button onclick="deleteEmployee()">Delete</button></td>
+    </tr>
+    <tr>
+      <td>employee2@example.com</td>
+      <td>Jane</td>
+      <td>Smith</td>
+      <td>Manager</td>
+      <td><button onclick="changeAccessLevel()">Change</button></td>
+      <td><button onclick="deleteEmployee()">Delete</button></td>
+    </tr>
+    <!-- Add more rows for additional employees -->
+    </tbody>
+  </table>
+</main>
+
+<footer>
+  &copy; 2024 Your Company Name
+</footer>
+</body>
+</html>

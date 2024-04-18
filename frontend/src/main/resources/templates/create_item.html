@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Item</title>
+  <link rel="stylesheet" href="/styles/styles.css"> <!-- Link to the external CSS file -->
+</head>
+<body>
+<header>
+  <h1>Inventory Management System - Create Item</h1>
+</header>
+
+<main>
+  <h2>Create New Item</h2>
+  <form th:action="@{/create_item}" method="post" th:object="${createStorageItemDTO}">
+    <!-- Select product -->
+    <div>
+      <label for="item">Select product type:</label>
+      <select id="item" name="item" th:field="*{itemId}">
+        <option th:each="item : ${items}" th:value="${item.id}" th:text="${item.name}"></option>
+      </select>
+    </div>
+
+    <!-- Select storage space -->
+    <div>
+      <label for="storageSpace">Select Storage Space:</label>
+      <select id="storageSpace" name="storageSpace" th:field="*{storageSpaceId}">
+        <option th:each="space : ${storageSpaces}" th:value="${space.id}" th:text="${space.name}"></option>
+      </select>
+    </div>
+
+    <!-- Creation Date -->
+    <div>
+      <label for="creationDate">Creation Date:</label>
+      <input type="date" id="creationDate" name="creationDate" th:field="*{creationDate}">
+    </div>
+
+    <!-- Batch Number -->
+    <div>
+      <label for="batchNumber">Batch Number:</label>
+      <input type="text" id="batchNumber" name="batchNumber" th:field="*{batchNumber}">
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit">Create Item</button>
+  </form>
+</main>
+
+<footer>
+  &copy; 2024 Your Company Name
+</footer>
+</body>
+</html>

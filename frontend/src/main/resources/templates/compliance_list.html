@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compliances List</title>
+  <link rel="stylesheet" href="../static/styles/styles.css"> <!-- Link to the external CSS file -->
+</head>
+<body>
+<header>
+  <h1>Inventory Management System</h1>
+  <nav>
+    <ul>
+      <li><a href="#">Dashboard</a></li>
+      <li><a href="#">Warehouses</a></li>
+      <li><a href="#">Employees</a></li>
+      <li><a href="#">Products</a></li>
+      <!-- Add more navigation links as needed -->
+    </ul>
+  </nav>
+  <div id="sorting">
+    <label for="sort">Sort By:</label>
+    <select id="sort">
+      <option value="expiry_date">Expiry Date</option>
+      <option value="recently_added">Recently Added</option>
+    </select>
+  </div>
+</header>
+
+<main>
+  <h2>Compliances List</h2>
+  <div id="compliances">
+    <!-- Each compliance will have its own section -->
+    <div class="compliance">
+      <h3>Compliance Name 1</h3>
+      <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      <p>Active from <span class="date">January 1, 2024</span> to <span class="date">December 31, 2025</span></p>
+    </div>
+    <!-- Add more compliances as needed -->
+  </div>
+</main>
+
+<footer>
+  &copy; 2024 Your Company Name
+</footer>
+</body>
+</html>
