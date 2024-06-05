@@ -9,8 +9,8 @@ import java.util.Date;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "storage_space_item")
-public class StorageSpaceItem {
+@Table(name = "box_item")
+public class BoxItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,8 +18,8 @@ public class StorageSpaceItem {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "storage_space_id", nullable = false)
-    private StorageSpace storageSpace;
+    @JoinColumn(name = "box_id", nullable = false)
+    private Box box;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

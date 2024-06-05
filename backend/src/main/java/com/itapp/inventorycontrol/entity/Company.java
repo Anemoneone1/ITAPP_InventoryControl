@@ -22,7 +22,7 @@ public class Company {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(mappedBy = "company")
-    private Set<CompanyCompliance> compliances;
+    private Set<ComplianceAgreements> compliances;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

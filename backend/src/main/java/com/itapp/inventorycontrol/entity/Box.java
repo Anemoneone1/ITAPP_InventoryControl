@@ -11,8 +11,8 @@ import java.util.Set;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "warehouse")
-public class Warehouse {
+@Table(name = "box")
+public class Box {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,18 +20,18 @@ public class Warehouse {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "address", nullable = false)
-    private String address;
+    @Column(name = "description", nullable = false)
+    private String description;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id", nullable = false)
-    private Company company;
+    @JoinColumn(name = "storage_id", nullable = false)
+    private Storage storage;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "warehouse")
+    @OneToMany(mappedBy = "box")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Set<Storage> storages;
+    private Set<BoxItem> items;
 }

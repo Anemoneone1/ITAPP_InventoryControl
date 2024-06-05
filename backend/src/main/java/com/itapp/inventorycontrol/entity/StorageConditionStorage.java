@@ -8,8 +8,8 @@ import lombok.*;
 @Data
 @Builder
 @Entity
-@Table(name = "storage_condition_storage_space")
-public class StorageConditionStorageSpace {
+@Table(name = "storage_condition_storage")
+public class StorageConditionStorage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,6 +23,6 @@ public class StorageConditionStorageSpace {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "storage_space_id", nullable = false)
-    private StorageSpace storageSpace;
+    @JoinColumn(name = "storage_id", nullable = false)
+    private Storage storage;
 }

@@ -9,8 +9,8 @@ import java.util.Date;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "company_compliance")
-public class CompanyCompliance {
+@Table(name = "company_agreements")
+public class ComplianceAgreements {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

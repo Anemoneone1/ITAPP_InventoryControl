@@ -21,7 +21,7 @@ public class Compliance {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(mappedBy = "compliance")
-    private Set<CompanyCompliance> currentCompliances;
+    private Set<ComplianceAgreements> currentCompliances;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

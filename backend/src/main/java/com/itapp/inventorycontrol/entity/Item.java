@@ -44,7 +44,7 @@ public class Item {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(mappedBy = "item")
-    private Set<StorageSpaceItem> storageSpaces;
+    private Set<BoxItem> storageSpaces;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
