@@ -30,5 +30,5 @@ public class Compliance {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(mappedBy = "compliance", cascade = CascadeType.ALL)
-    private Set<ComplianceAgreement> currentCompliances;
+    private Set<ComplianceAgreement> agreements;
 }

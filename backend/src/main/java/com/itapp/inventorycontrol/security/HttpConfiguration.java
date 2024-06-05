@@ -64,6 +64,7 @@ public class HttpConfiguration {
 
                 // ComplianceController
                 .requestMatchers(HttpMethod.GET, APIVersion.current + "/compliance").hasAnyRole(roles(MANAGER))
+                .requestMatchers(HttpMethod.GET, APIVersion.current + "/compliance/history").hasAnyRole(roles(MANAGER))
                 .requestMatchers(HttpMethod.POST, APIVersion.current + "/compliance").hasAnyRole(roles(MANAGER))
                 .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/compliance").hasAnyRole(roles(MANAGER))
 

@@ -27,6 +27,11 @@ public class ComplianceService {
         return complianceRepository.findAllByCompanyId(user.getCompany().getId());
     }
 
+    public List<Compliance> getAllWithAgreement() {
+        User user = signedInUsernameGetter.getUser();
+        return complianceRepository.findAllByCompanyIdAndAgreementsNotEmpty(user.getCompany().getId());
+    }
+
     public Compliance create(Compliance compliance) {
         User user = signedInUsernameGetter.getUser();
         compliance.setCompany(user.getCompany());

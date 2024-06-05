@@ -2,6 +2,7 @@ package com.itapp.inventorycontrol.controller;
 
 import com.itapp.inventorycontrol.dto.request.ComplianceCreateRequest;
 import com.itapp.inventorycontrol.dto.request.ComplianceDeleteRequest;
+import com.itapp.inventorycontrol.dto.response.ComplianceHistoryResponse;
 import com.itapp.inventorycontrol.dto.response.ComplianceResponse;
 import com.itapp.inventorycontrol.entity.Compliance;
 import com.itapp.inventorycontrol.mapper.ComplianceMapper;
@@ -25,6 +26,14 @@ public class ComplianceController {
     public ResponseEntity<List<ComplianceResponse>> getAll() {
         return new ResponseEntity<>(complianceService.getAll().stream()
                 .map(complianceMapper::complianceToResponse)
+                .collect(Collectors.toList()),
+                HttpStatus.OK);
+    }
+
+    @GetMapping("/history")
+    public ResponseEntity<List<ComplianceHistoryResponse>> getHistory() {
+        return new ResponseEntity<>(complianceService.getAllWithAgreement().stream()
+                .map(complianceMapper::complianceToHistoryResponse)
                 .collect(Collectors.toList()),
                 HttpStatus.OK);
     }

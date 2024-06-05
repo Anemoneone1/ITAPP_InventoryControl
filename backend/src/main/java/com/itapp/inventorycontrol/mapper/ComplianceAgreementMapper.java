@@ -1,6 +1,7 @@
 package com.itapp.inventorycontrol.mapper;
 
 import com.itapp.inventorycontrol.dto.request.ComplianceAgreementCreateRequest;
+import com.itapp.inventorycontrol.dto.response.ComplianceAgreementHistoryResponse;
 import com.itapp.inventorycontrol.dto.response.ComplianceAgreementResponse;
 import com.itapp.inventorycontrol.entity.ComplianceAgreement;
 import org.mapstruct.Mapper;
@@ -13,4 +14,6 @@ public interface ComplianceAgreementMapper {
 
     @Mapping(target = "complianceId", source = "compliance.id")
     ComplianceAgreementResponse complianceAgreementToResponse(ComplianceAgreement compliance);
+
+    ComplianceAgreementHistoryResponse complianceAgreementToHistoryResponse(ComplianceAgreement compliance);
 }
