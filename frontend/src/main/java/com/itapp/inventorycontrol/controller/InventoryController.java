@@ -50,7 +50,6 @@ public class InventoryController {
     }
 
 
-
     @PostMapping("/create_warehouse")
     public String createWarehouse(@Validated @ModelAttribute("createWarehouse") CreateWarehouseDTO createWarehouseDTO, HttpServletRequest httpServletRequest){
         String token = (String) httpServletRequest.getSession().getAttribute("token");
@@ -89,6 +88,85 @@ public class InventoryController {
         return "redirect:/dashboard";
     }
 
+    @GetMapping("/item_list")
+    public String getItemList(Model model, HttpSession httpSession){
+        String token = (String) httpSession.getAttribute("token");
+        if (token == null) {
+            return "redirect:/auth/login";
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + token);
+        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<List<ItemDTO>> responseEntity = restTemplate.exchange(api + "/items", HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<ItemDTO>>() {});
+
+        if (responseEntity.getStatusCode() != HttpStatus.OK) {
+            System.out.println("Request failed with status code: " + responseEntity.getStatusCode());
+            return "redirect:/auth/login";
+        }
+
+        model.addAttribute("itemList", responseEntity.getBody());
+        return "item_list";
+    }
+
+    @DeleteMapping("/item/{id}")
+    public String deleteItem(@PathVariable("id") Long id, HttpServletRequest httpServletRequest){
+        String token = (String) httpServletRequest.getSession().getAttribute("token");
+        if (token == null) {
+            return "redirect:/auth/login";
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + token);
+        HttpEntity<DeleteStorageItemDTO> requestEntity = new HttpEntity<>(new DeleteStorageItemDTO(id), headers);
+
+        ResponseEntity<TokenDTO> responseEntity = restTemplate.exchange(api + "/item", HttpMethod.DELETE, requestEntity, TokenDTO.class);
+
+        if (responseEntity.getStatusCode() != HttpStatus.OK){
+            System.out.println("Request failed with status code: " + responseEntity.getStatusCode());
+            return "redirect:/item_list";
+        }
+        return "redirect:/item_list";
+    }
+
+    @PostMapping("/item")
+    public String createItem(CreateItemDTO createItemDTO, HttpServletRequest httpServletRequest){
+        String token = (String) httpServletRequest.getSession().getAttribute("token");
+        if (token == null) {
+            return "redirect:/auth/login";
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + token);
+        HttpEntity<CreateItemDTO> requestEntity = new HttpEntity<>(createItemDTO, headers);
+        ResponseEntity<TokenDTO> responseEntity = restTemplate.exchange(api + "/item", HttpMethod.POST, requestEntity, TokenDTO.class);
+
+        if (responseEntity.getStatusCode() != HttpStatus.OK){
+            System.out.println("Request failed with status code: " + responseEntity.getStatusCode());
+        }
+        return "redirect:/item_list";
+    }
+
+    @GetMapping("/item/create")
+    public String itemCreationPage(Model model, HttpServletRequest httpSession){
+        String token = (String) httpSession.getSession().getAttribute("token");
+        if (token == null) {
+            return "redirect:/auth/login";
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + token);
+        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+
+
+        ResponseEntity<ItemCreationPageDTO> responseEntity = restTemplate.exchange(api + "/item_creation_page", HttpMethod.GET, requestEntity, ItemCreationPageDTO.class);
+
+        if (responseEntity.getStatusCode() != HttpStatus.OK){
+            System.out.println("Request failed with status code: " + responseEntity.getStatusCode());
+            return "redirect:/item_list";
+        }
+        model.addAttribute("itemCreationPageDTO", responseEntity.getBody());
+        model.addAttribute("CreateItemDTO", new CreateItemDTO());
+        return "create_item";
+    }
+
     @GetMapping("/product_list")
     public String getProductList(Model model, HttpSession httpSession){
         String token = (String) httpSession.getAttribute("token");
@@ -108,25 +186,6 @@ public class InventoryController {
 
         model.addAttribute("storageItemList", responseEntity.getBody());
         return "product_list";
-    }
-
-    @DeleteMapping("/delete_item/{id}")
-    public String deleteItem(@PathVariable("id") Long id, HttpServletRequest httpServletRequest){
-        String token = (String) httpServletRequest.getSession().getAttribute("token");
-        if (token == null) {
-            return "redirect:/auth/login";
-        }
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + token);
-        HttpEntity<DeleteStorageItemDTO> requestEntity = new HttpEntity<>(new DeleteStorageItemDTO(id), headers);
-
-        ResponseEntity<TokenDTO> responseEntity = restTemplate.exchange(api + "/item", HttpMethod.DELETE, requestEntity, TokenDTO.class);
-
-        if (responseEntity.getStatusCode() != HttpStatus.OK){
-            System.out.println("Request failed with status code: " + responseEntity.getStatusCode());
-            return "redirect:/item_list";
-        }
-        return "redirect:/item_list";
     }
 
     @GetMapping("/create_product")
@@ -178,26 +237,5 @@ public class InventoryController {
         }
         System.out.println("Request failed with status code: " + responseEntity.getStatusCode());
         return "redirect:/product_list";
-    }
-
-    @GetMapping("/item_list")
-    public String getItemList(Model model, HttpSession httpSession){
-        String token = (String) httpSession.getAttribute("token");
-        if (token == null) {
-            return "redirect:/auth/login";
-        }
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + token);
-        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
-
-        ResponseEntity<List<ItemDTO>> responseEntity = restTemplate.exchange(api + "/items", HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<ItemDTO>>() {});
-
-        if (responseEntity.getStatusCode() != HttpStatus.OK) {
-            System.out.println("Request failed with status code: " + responseEntity.getStatusCode());
-            return "redirect:/auth/login";
-        }
-
-        model.addAttribute("itemList", responseEntity.getBody());
-        return "item_list";
     }
 }

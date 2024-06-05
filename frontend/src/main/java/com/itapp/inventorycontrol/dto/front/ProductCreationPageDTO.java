@@ -9,7 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ItemCreationPageDTO {
-    private List<ComplianceDTO> complianceList;
-    private List<StorageConditionDTO> storageConditionList;
+public class ProductCreationPageDTO {
+    private List<ItemDTO> itemList;
+    private List<StorageSpaceDTO> storageList;
 }
