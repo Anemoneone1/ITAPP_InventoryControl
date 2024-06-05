@@ -1,48 +1,176 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Create Item</title>
-  <link rel="stylesheet" href="/styles/styles.css"> <!-- Link to the external CSS file -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+
+    header p {
+      margin: 5px 0;
+    }
+
+    main {
+      flex: 1;
+      padding: 20px;
+    }
+
+    h2 {
+      font-size: 24px;
+      color: #444;
+      margin-bottom: 20px;
+    }
+
+    form {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    input[type="text"], input[type="number"], textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    input[type="checkbox"] {
+      margin-right: 5px;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      background-color: #4CAF50;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+    }
+
+    nav {
+      background-color: #555;
+      padding: 10px;
+      text-align: center;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    nav ul li {
+      margin: 0 10px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    nav ul li a:hover {
+      background-color: #444;
+    }
+  </style>
 </head>
 <body>
 <header>
-  <h1>Inventory Management System - Create Item</h1>
+  <h1>Inventory Management System</h1>
 </header>
 
+<nav>
+  <ul>
+    <li><a href="dashboard.html">Dashboard</a></li>
+    <li><a href="item_list.html">Item List</a></li>
+  </ul>
+</nav>
+
 <main>
-  <h2>Create New Item</h2>
-  <form th:action="@{/create_item}" method="post" th:object="${createStorageItemDTO}">
-    <!-- Select product -->
+  <h2>Create Item</h2>
+  <form id="itemForm" th:action="@{/item/create}" method="post">
     <div>
-      <label for="item">Select product type:</label>
-      <select id="item" name="item" th:field="*{itemId}">
-        <option th:each="item : ${items}" th:value="${item.id}" th:text="${item.name}"></option>
-      </select>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required>
     </div>
-
-    <!-- Select storage space -->
     <div>
-      <label for="storageSpace">Select Storage Space:</label>
-      <select id="storageSpace" name="storageSpace" th:field="*{storageSpaceId}">
-        <option th:each="space : ${storageSpaces}" th:value="${space.id}" th:text="${space.name}"></option>
-      </select>
+      <label for="squareSpace">Square Space:</label>
+      <input type="number" id="squareSpace" name="squareSpace" required>
     </div>
-
-    <!-- Creation Date -->
     <div>
-      <label for="creationDate">Creation Date:</label>
-      <input type="date" id="creationDate" name="creationDate" th:field="*{creationDate}">
+      <label for="weight">Weight:</label>
+      <input type="number" id="weight" name="weight" required>
     </div>
-
-    <!-- Batch Number -->
     <div>
-      <label for="batchNumber">Batch Number:</label>
-      <input type="text" id="batchNumber" name="batchNumber" th:field="*{batchNumber}">
+      <label for="lifetime">Lifetime:</label>
+      <input type="number" id="lifetime" name="lifetime" required>
     </div>
-
-    <!-- Submit Button -->
+    <div>
+      <label for="description">Description:</label>
+      <textarea id="description" name="description" rows="4"></textarea>
+    </div>
+    <div>
+      <p>Compliances:</p>
+      <th:block th:each="compliance : ${itemCreationPageDTO.complianceList}">
+        <label th:for="${'compliance-' + compliance.id}">
+          <input type="checkbox" th:id="${'compliance-' + compliance.id}" th:name="'complianceIds'" th:value="${compliance.id}">
+          <span th:text="${compliance.name}"></span>
+        </label>
+      </th:block>
+    </div>
+    <div>
+      <p>Storage Conditions:</p>
+      <th:block th:each="condition : ${itemCreationPageDTO.storageConditionList}">
+        <label th:for="${'condition-' + condition.id}">
+          <input type="checkbox" th:id="${'condition-' + condition.id}" th:name="'storageConditionIds'" th:value="${condition.id}">
+          <span th:text="${condition.condition}"></span>
+        </label>
+      </th:block>
+    </div>
     <button type="submit">Create Item</button>
   </form>
 </main>
@@ -50,5 +178,6 @@
 <footer>
   &copy; 2024 Your Company Name
 </footer>
+
 </body>
 </html>

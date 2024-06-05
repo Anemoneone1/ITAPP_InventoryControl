@@ -43,7 +43,7 @@ public class QrController {
         HttpEntity<String> requestEntity = new HttpEntity<>(qrData, headers);
 
         Map<String, Long> response = new HashMap<>();
-        ResponseEntity<Long> responseEntity = restTemplate.exchange(api + "/qr", HttpMethod.POST, requestEntity, Long.class);
+        ResponseEntity<Long> responseEntity = restTemplate.exchange(api + "/qr", HttpMethod.GET, requestEntity, Long.class);
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
             response.put("action", responseEntity.getBody());
         }

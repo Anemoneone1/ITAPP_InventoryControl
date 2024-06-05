@@ -163,7 +163,7 @@ public class InventoryController {
             return "redirect:/item_list";
         }
         model.addAttribute("itemCreationPageDTO", responseEntity.getBody());
-        model.addAttribute("CreateItemDTO", new CreateItemDTO());
+        model.addAttribute("createItemDTO", new CreateItemDTO());
         return "create_item";
     }
 
