@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 @Data
 public class ComplianceCreateRequest {
     private String name;
+    private String description;
 }

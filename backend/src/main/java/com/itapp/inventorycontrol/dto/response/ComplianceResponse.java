@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class ComplianceResponse {
     private Long id;
     private String name;
+    private String description;
 }

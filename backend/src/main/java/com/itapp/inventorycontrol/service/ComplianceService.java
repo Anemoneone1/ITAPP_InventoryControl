@@ -30,6 +30,7 @@ public class ComplianceService {
     public Compliance create(Compliance compliance) {
         User user = signedInUsernameGetter.getUser();
         compliance.setCompany(user.getCompany());
+
         return complianceRepository.save(compliance);
     }
 
@@ -45,7 +46,7 @@ public class ComplianceService {
         return complianceRepository.findAllByCompanyIdAndIdIn(companyId, complianceIds);
     }
 
-    private void validateUserOwnsCompliance(User user, Compliance compliance) {
+    public void validateUserOwnsCompliance(User user, Compliance compliance) {
         if (compliance.getCompany().getId() != user.getCompany().getId()) {
             throw new ICException(ICErrorType.IC_701);
         }
