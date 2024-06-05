@@ -117,7 +117,7 @@ public class ItemService {
         itemRepository.deleteById(id);
     }
 
-    private void validateUserOwnsItem(User user, Item item) {
+    public void validateUserOwnsItem(User user, Item item) {
         if (item.getCompany().getId() != user.getCompany().getId()) {
             throw new ICException(ICErrorType.IC_401);
         }

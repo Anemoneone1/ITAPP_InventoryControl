@@ -1,6 +1,9 @@
 package com.itapp.inventorycontrol.service;
 
-import com.itapp.inventorycontrol.entity.*;
+import com.itapp.inventorycontrol.entity.Storage;
+import com.itapp.inventorycontrol.entity.StorageCondition;
+import com.itapp.inventorycontrol.entity.StorageConditionStorage;
+import com.itapp.inventorycontrol.entity.User;
 import com.itapp.inventorycontrol.exception.ICErrorType;
 import com.itapp.inventorycontrol.exception.ICException;
 import com.itapp.inventorycontrol.repository.StorageConditionStorageRepository;
@@ -36,7 +39,7 @@ public class StorageService {
     @Transactional
     public Storage create(Storage storage, List<Long> storageConditionIds) {
         User user = signedInUsernameGetter.getUser();
-        validateUserOwnsWarehouse(user, storage.getWarehouse().getId());
+        warehouseService.validateUserOwnsWarehouse(user, storage.getWarehouse().getId());
 
         // generate new StorageConditionStorages
         Set<StorageCondition> conditions = storageConditionService.getAllByIds(storageConditionIds, user.getCompany().getId());
@@ -56,7 +59,6 @@ public class StorageService {
     public Storage edit(Storage request, List<Long> storageConditionIds) {
         User user = signedInUsernameGetter.getUser();
         Storage storage = getOrThrow(request.getId());
-        validateUserOwnsWarehouse(user, storage.getWarehouse().getId());
         warehouseService.validateUserOwnsWarehouse(user, request.getWarehouse().getId());
 
         // generate new StorageConditionStorages
@@ -84,14 +86,14 @@ public class StorageService {
     public void delete(Long id) {
         User user = signedInUsernameGetter.getUser();
         Storage storage = getOrThrow(id);
-        validateUserOwnsWarehouse(user, storage.getWarehouse().getId());
+        warehouseService.validateUserOwnsWarehouse(user, storage.getWarehouse().getId());
 
         storageRepository.deleteById(id);
     }
 
-    private void validateUserOwnsWarehouse(User user, Long warehouseId) {
-        Warehouse warehouse = warehouseService.getOrThrow(warehouseId);
-        if (warehouse.getCompany().getId() != user.getCompany().getId()) {
+    public void validateUserOwnsStorage(User user, Long storageId) {
+        Storage storage = getOrThrow(storageId);
+        if (storage.getWarehouse().getCompany().getId() != user.getCompany().getId()) {
             throw new ICException(ICErrorType.IC_801);
         }
     }

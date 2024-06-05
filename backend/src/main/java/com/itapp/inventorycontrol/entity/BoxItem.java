@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.util.Date;
 
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -32,7 +33,4 @@ public class BoxItem {
 
     @Column(name = "expiration_date", nullable = false)
     private Date expirationDate;
-
-    @Column(name = "batch_number", nullable = false)
-    private String batchNumber;
 }

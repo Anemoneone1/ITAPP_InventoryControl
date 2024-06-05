@@ -9,11 +9,9 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class StorageSpaceItemResponse {
+public class BoxItemResponse {
     private Long id;
-    private String itemName;
+    private Long itemId;
+    private Date creationDate;
     private Date expirationDate;
-    private Double weight;
-    private String storageSpaceName;
-    private String warehouseName;
 }

@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface StorageConditionItemRepository extends JpaRepository<StorageConditionItem, Long> {
+    void deleteAllByItemId(Long itemId);
 }

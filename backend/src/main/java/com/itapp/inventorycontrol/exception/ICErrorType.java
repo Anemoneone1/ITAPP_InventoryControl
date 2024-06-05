@@ -35,7 +35,7 @@ public enum ICErrorType {
 
     // storage space
     IC_801("Storage not found", HttpStatus.NOT_FOUND),
-    IC_802("Storage item not found", HttpStatus.NOT_FOUND);
+    IC_802("Box not found", HttpStatus.NOT_FOUND);
 
     private final String description;
     private final HttpStatus status;

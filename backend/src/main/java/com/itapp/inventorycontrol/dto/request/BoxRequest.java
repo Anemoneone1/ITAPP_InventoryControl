@@ -9,9 +9,10 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class StorageSpaceItemCreateRequest {
-    private Long storageSpaceId;
+public class BoxRequest {
+    private Long storageId;
+    private String serialNumber;
+    private Integer itemNum;
     private Long itemId;
-    private String creationDate;
-    private String batchNumber;
+    private Date creationDate;
 }

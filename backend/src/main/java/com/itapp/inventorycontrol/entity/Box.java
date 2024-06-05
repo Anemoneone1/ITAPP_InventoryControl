@@ -17,11 +17,10 @@ public class Box {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
-
-    @Column(name = "description", nullable = false)
-    private String description;
+    @Column(name = "uuid", length = 36)
+    private String uuid;
+    @Column(name = "serialNumber", nullable = false)
+    private String serialNumber;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

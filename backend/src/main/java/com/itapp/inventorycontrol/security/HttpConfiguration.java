@@ -86,9 +86,11 @@ public class HttpConfiguration {
                 .requestMatchers(HttpMethod.PUT, APIVersion.current + "/storage").hasAnyRole(roles(MANAGER))
                 .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/storage").hasAnyRole(roles(MANAGER))
 
-                // StorageSpaceItemController
-                .requestMatchers(HttpMethod.GET, APIVersion.current + "/storage-items").authenticated()
-                .requestMatchers(HttpMethod.POST, APIVersion.current + "/storage-items").authenticated()
+                // BoxController
+                .requestMatchers(HttpMethod.GET, APIVersion.current + "/box").hasAnyRole(roles(MANAGER, EMPLOYEE))
+                .requestMatchers(HttpMethod.GET, APIVersion.current + "/box/*").hasAnyRole(roles(MANAGER, EMPLOYEE))
+                .requestMatchers(HttpMethod.POST, APIVersion.current + "/box").hasAnyRole(roles(MANAGER, EMPLOYEE))
+                .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/box").hasAnyRole(roles(MANAGER, EMPLOYEE))
 
                 .anyRequest().denyAll()
         );
