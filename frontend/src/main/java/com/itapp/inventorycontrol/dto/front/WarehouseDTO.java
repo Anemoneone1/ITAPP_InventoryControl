@@ -13,4 +13,5 @@ public class WarehouseDTO {
     private Double squareSpace;
     private Double takenSpace;
     private String address;
+    private int warnings;
 }

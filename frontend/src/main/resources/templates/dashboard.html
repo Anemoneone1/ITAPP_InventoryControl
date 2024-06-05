@@ -5,6 +5,154 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Inventory Management Dashboard</title>
   <link rel="stylesheet" href="/styles/styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+
+    header p {
+      margin: 5px 0;
+    }
+
+    nav {
+      background-color: #555;
+      padding: 10px;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    nav ul li {
+      margin: 0 10px;
+      position: relative;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    nav ul li a:hover {
+      background-color: #444;
+    }
+
+    .warnings-badge {
+      background-color: red;
+      color: white;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-size: 12px;
+      position: absolute;
+      top: -5px;
+      right: -10px;
+    }
+
+    main {
+      flex: 1;
+      padding: 20px;
+    }
+
+    h2 {
+      font-size: 24px;
+      color: #444;
+      margin-bottom: 20px;
+    }
+
+    .warehouse {
+      background-color: #fff;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .warehouse div {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .warehouse p {
+      margin: 5px 0;
+    }
+
+    .warehouse .warehouse-name {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .warehouse .warehouse-space {
+      font-size: 16px;
+      color: #555;
+    }
+
+    .warehouse button {
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #d9534f;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .warehouse button:hover {
+      background-color: #c9302c;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .popup-content {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    .popup.show {
+      display: flex;
+    }
+
+    footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+    }
+  </style>
 </head>
 <body>
 <header>
@@ -12,84 +160,43 @@
   <p><span th:text="${dashboardDTO.userName}"></span> <span th:text="${dashboardDTO.userSurname}"></span></p>
 </header>
 
-
 <nav>
   <ul>
-    <li><a href="#">Warehouses</a></li>
-    <li><a href="employee_list.html">Employees List</a></li> <!-- Link to the employee list page -->
-    <li><a th:href="@{/item_list}">Product List</a></li>
-    <li><a href="#" onclick="showWarehousePopup()">Add Warehouse</a></li> <!-- Call showWarehousePopup() on click -->
-    <li><a href="#" onclick="showEmployeePopup()">Add Employee</a></li>
+    <li th:if="${dashboardDTO.role == 'manager'}"><a href="employee_list.html">Employees List</a></li>
+    <li th:if="${dashboardDTO.role == 'manager'}"><a th:href="@{/item_list}">Product List</a></li>
+    <li th:if="${dashboardDTO.role == 'manager'}"><a href="#" onclick="showWarehousePopup()">Add Warehouse</a></li>
     <li><a href="#">Item List</a></li>
     <li><a href="#">Compliances List</a></li>
-    <li><a href="#">Warnings List</a></li>
+    <li><a href="#">Warnings List</a>
+      <span th:if="${dashboardDTO.warnings > 0}" class="warnings-badge" th:text="${dashboardDTO.warnings}"></span>
+    </li>
   </ul>
 </nav>
 
 <main>
   <h2>Warehouse List</h2>
   <ul>
-    <!-- Iterate over the list of warehouses -->
-    <li th:each="warehouse : ${dashboardDTO.getWarehouses()}">
-      <!-- Warehouse details -->
+    <li th:each="warehouse : ${dashboardDTO.getWarehouses()}" class="warehouse">
       <div>
-        <p>Name: <a th:href="@{'/warehouse/' + ${warehouse.id}}"><span th:text="${warehouse.name}"></span></a></p>
-        <p>Address: <span th:text="${warehouse.address}"></span></p>
-        <p>Taken Space: <span th:text="${warehouse.takenSpace}"></span></p>
-        <p>Total Space: <span th:text="${warehouse.squareSpace}"></span></p>
-        <!-- Delete button -->
-        <form id="warehouseDelete" th:action="@{'/delete_warehouse/' + ${warehouse.id}}" method="post">
-          <input type="hidden" name="_method" value="DELETE" />
-          <button type="submit">Delete</button>
-        </form>
-
-
+        <p class="warehouse-name"><a th:href="@{'/warehouse/' + ${warehouse.id}}"><span th:text="${warehouse.name}"></span></a></p>
+        <p class="warehouse-address">Address: <span th:text="${warehouse.address}"></span></p>
+        <p class="warehouse-space" th:text="'Space: ' + ${warehouse.takenSpace} + '/' + ${warehouse.squareSpace}"></p>
+        <p class="warehouse-space" th:text="'Fill: ' + (${warehouse.takenSpace}/${warehouse.squareSpace}*100).toFixed(1) + '%'"></p>
+        <span th:if="${warehouse.warnings > 0}" class="warnings-badge" th:text="${warehouse.warnings}"></span>
       </div>
+      <form th:if="${dashboardDTO.role == 'manager'}" th:action="@{'/delete_warehouse/' + ${warehouse.id}}" method="post">
+        <input type="hidden" name="_method" value="DELETE" />
+        <button type="submit">Delete</button>
+      </form>
     </li>
   </ul>
 
-  <!-- Include employee creation popup content -->
-  <div id="employeePopupContainer" class="popup">
-    <div class="popup-content">
-      <h2>Create Employee Account</h2>
-      <form id="employeeForm" th:action="@{/user/create_employee}" th:object="${createEmployeeDTO}" method="post" onsubmit="return validateForm()">
-        <div>
-          <label for="name">First Name:</label>
-          <input type="text" id="name" name="name" th:field="*{name}">
-          <span id="nameError" class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
-        </div>
-        <div>
-          <label for="surname">Last Name:</label>
-          <input type="text" id="surname" name="surname" th:field="*{surname}">
-          <span id="surnameError" class="error" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></span>
-        </div>
-        <div>
-          <label for="phone">Phone:</label>
-          <input type="text" id="phone" name="phone" th:field="*{phone}">
-          <span id="phoneError" class="error" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span>
-        </div>
-        <div>
-          <label for="email">Email:</label>
-          <input type="email" id="email" name="email" th:field="*{email}">
-          <span id="emailError" class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
-        </div>
-        <div>
-          <label for="password">Password:</label>
-          <input type="password" id="password" name="password" th:field="*{password}">
-          <span id="passwordError" class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
-        </div>
-        <button type="submit">Create Employee</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Include warehouse creation popup content -->
   <div id="warehousePopupContainer" class="popup">
     <div class="popup-content">
       <h2>Create Warehouse</h2>
       <form id="warehouseForm" th:action="@{/create_warehouse}" th:object="${createWarehouseDTO}" method="post" onsubmit="return validateForm()">
         <div>
-          <label for="name">Name:</label>
+          <label>Name:</label>
           <input type="text" id="warehouseName" name="warehouseName" th:field="*{name}">
           <span id="warehouseNameError" class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
         </div>
@@ -119,9 +226,36 @@
     warehousePopup.classList.add('show'); // Show the warehouse popup
   }
 
-  function showEmployeePopup() {
-    var employeePopup = document.getElementById("employeePopupContainer");
-    employeePopup.classList.add('show'); // Show the employee popup
+  function validateForm() {
+    // Reset error messages
+    document.getElementById("warehouseNameError").innerHTML = "";
+    document.getElementById("addressError").innerHTML = "";
+    document.getElementById("spaceError").innerHTML = "";
+
+    var name = document.getElementById("warehouseName").value;
+    var address = document.getElementById("address").value;
+    var space = document.getElementById("space").value;
+    var valid = true;
+
+    // Check for empty warehouse name
+    if (name === "") {
+      document.getElementById("warehouseNameError").innerHTML = "Warehouse name is required";
+      valid = false;
+    }
+
+    // Check for empty address
+    if (address === "") {
+      document.getElementById("addressError").innerHTML = "Address is required";
+      valid = false;
+    }
+
+    // Check for empty square space
+    if (space === "") {
+      document.getElementById("spaceError").innerHTML = "Square space is required";
+      valid = false;
+    }
+
+    return valid;
   }
 </script>
 </body>

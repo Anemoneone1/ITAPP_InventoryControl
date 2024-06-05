@@ -41,7 +41,6 @@ public class InventoryController {
         }
 
         model.addAttribute("dashboardDTO", responseEntity.getBody());
-        model.addAttribute("createEmployeeDTO", new CreateEmployeeDTO());
         model.addAttribute("createWarehouseDTO", new CreateWarehouseDTO());
         return "dashboard";
     }

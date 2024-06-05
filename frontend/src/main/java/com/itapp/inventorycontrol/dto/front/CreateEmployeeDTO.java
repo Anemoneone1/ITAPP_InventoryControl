@@ -13,4 +13,5 @@ public class CreateEmployeeDTO {
     private String phone;
     private String name;
     private String surname;
+    private Long companyID;
 }

@@ -9,11 +9,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class DashboardDTO {
-    private String userName;
-    private String userSurname;
-    private String companyName;
+public class EmployeeDTO {
+    private long id;
+    private String name;
+    private String surname;
+    private String email;
     private String role;
-    private int warning;
-    private List<WarehouseDTO> warehouses;
+    private String phone;
+
 }

@@ -4,46 +4,173 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Employee List</title>
-  <link rel="stylesheet" href="../static/styles/styles.css"> <!-- Link to the external CSS file -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+
+    header p {
+      margin: 5px 0;
+    }
+
+    main {
+      flex: 1;
+      padding: 20px;
+    }
+
+    h2 {
+      font-size: 24px;
+      color: #444;
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f4f4f4;
+    }
+
+    button {
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #d9534f;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #c9302c;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .popup-content {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    .popup.show {
+      display: flex;
+    }
+
+    footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+    }
+
+    nav {
+      background-color: #555;
+      padding: 10px;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    nav ul li {
+      margin: 0 10px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    nav ul li a:hover {
+      background-color: #444;
+    }
+  </style>
 </head>
 <body>
 <header>
   <h1>Inventory Management System</h1>
-  <p>Welcome, John Doe</p> <!-- Replace with employee name/surname -->
 </header>
+
+<nav>
+  <ul>
+    <li><a href="dashboard.html">Dashboard</a></li>
+    <!-- Add other navigation links as needed -->
+  </ul>
+</nav>
 
 <main>
   <h2>Employee List</h2>
+  <button onclick="showEmployeePopup()">Create Employee Account</button>
   <table>
     <thead>
     <tr>
       <th>Email</th>
       <th>Name</th>
       <th>Surname</th>
-      <th>Access Level</th>
-      <th>Change Access Level</th>
+      <th>Role</th>
       <th>Delete</th>
     </tr>
     </thead>
     <tbody>
-    <!-- Mockup list of employees -->
-    <tr>
-      <td>employee1@example.com</td>
-      <td>John</td>
-      <td>Doe</td>
-      <td>Employee</td>
-      <td><button onclick="changeAccessLevel()">Change</button></td>
-      <td><button onclick="deleteEmployee()">Delete</button></td>
+    <tr th:each="employee : ${employeeListDTO}">
+      <td th:text="${employee.email}"></td>
+      <td th:text="${employee.name}"></td>
+      <td th:text="${employee.surname}"></td>
+      <td th:text="${employee.role}"></td>
+      <td>
+        <form th:action="@{'/delete_employee/' + ${employee.id}}" method="post">
+          <input type="hidden" name="_method" value="DELETE" />
+          <button type="submit">Delete</button>
+        </form>
+      </td>
     </tr>
-    <tr>
-      <td>employee2@example.com</td>
-      <td>Jane</td>
-      <td>Smith</td>
-      <td>Manager</td>
-      <td><button onclick="changeAccessLevel()">Change</button></td>
-      <td><button onclick="deleteEmployee()">Delete</button></td>
-    </tr>
-    <!-- Add more rows for additional employees -->
     </tbody>
   </table>
 </main>
@@ -51,5 +178,94 @@
 <footer>
   &copy; 2024 Your Company Name
 </footer>
+
+<!-- Employee creation popup -->
+<div id="employeePopupContainer" class="popup">
+  <div class="popup-content">
+    <h2>Create Employee Account</h2>
+    <form id="employeeForm" th:action="@{/user/create_employee}" th:object="${createEmployeeDTO}" method="post" onsubmit="return validateForm()">
+      <div>
+        <label for="name">First Name:</label>
+        <input type="text" id="name" name="name" th:field="*{name}">
+        <span id="nameError" class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+      </div>
+      <div>
+        <label for="surname">Last Name:</label>
+        <input type="text" id="surname" name="surname" th:field="*{surname}">
+        <span id="surnameError" class="error" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></span>
+      </div>
+      <div>
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone" name="phone" th:field="*{phone}">
+        <span id="phoneError" class="error" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span>
+      </div>
+      <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" th:field="*{email}">
+        <span id="emailError" class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+      </div>
+      <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" th:field="*{password}">
+        <span id="passwordError" class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+      </div>
+      <button type="submit">Create Employee</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  function showEmployeePopup() {
+    var employeePopup = document.getElementById("employeePopupContainer");
+    employeePopup.classList.add('show'); // Show the employee popup
+  }
+
+  function validateForm() {
+    // Reset error messages
+    document.getElementById("nameError").innerHTML = "";
+    document.getElementById("surnameError").innerHTML = "";
+    document.getElementById("phoneError").innerHTML = "";
+    document.getElementById("emailError").innerHTML = "";
+    document.getElementById("passwordError").innerHTML = "";
+
+    var name = document.getElementById("name").value;
+    var surname = document.getElementById("surname").value;
+    var phone = document.getElementById("phone").value;
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("password").value;
+    var valid = true;
+
+    // Check for empty fields
+    if (name === "") {
+      document.getElementById("nameError").innerHTML = "First name is required";
+      valid = false;
+    }
+    if (surname === "") {
+      document.getElementById("surnameError").innerHTML = "Last name is required";
+      valid = false;
+    }
+    if (phone === "") {
+      document.getElementById("phoneError").innerHTML = "Phone number is required";
+      valid = false;
+    }
+    if (email === "") {
+      document.getElementById("emailError").innerHTML = "Email is required";
+      valid = false;
+    } else {
+      // Check for valid email format using a regular expression
+      var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(email)) {
+        document.getElementById("emailError").innerHTML = "Invalid email format";
+        valid = false;
+      }
+    }
+    if (password === "") {
+      document.getElementById("passwordError").innerHTML = "Password is required";
+      valid = false;
+    }
+
+    return valid;
+  }
+</script>
 </body>
 </html>
