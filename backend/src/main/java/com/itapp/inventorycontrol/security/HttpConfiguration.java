@@ -49,6 +49,7 @@ public class HttpConfiguration {
                 .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/user/employee").hasAnyRole(roles(MANAGER))
 
                 // WarehouseController
+                .requestMatchers(HttpMethod.GET, APIVersion.current + "/warehouse/list").hasAnyRole(roles(MANAGER, EMPLOYEE))
                 .requestMatchers(HttpMethod.GET, APIVersion.current + "/warehouse").hasAnyRole(roles(MANAGER, EMPLOYEE))
                 .requestMatchers(HttpMethod.POST, APIVersion.current + "/warehouse").hasAnyRole(roles(MANAGER))
                 .requestMatchers(HttpMethod.PUT, APIVersion.current + "/warehouse").hasAnyRole(roles(MANAGER))

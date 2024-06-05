@@ -3,6 +3,7 @@ package com.itapp.inventorycontrol.controller;
 import com.itapp.inventorycontrol.dto.request.WarehouseCreateRequest;
 import com.itapp.inventorycontrol.dto.request.WarehouseDeleteRequest;
 import com.itapp.inventorycontrol.dto.request.WarehouseEditRequest;
+import com.itapp.inventorycontrol.dto.response.WarehouseListResponse;
 import com.itapp.inventorycontrol.dto.response.WarehouseResponse;
 import com.itapp.inventorycontrol.entity.Warehouse;
 import com.itapp.inventorycontrol.mapper.WarehouseMapper;
@@ -21,6 +22,14 @@ import java.util.stream.Collectors;
 public class WarehouseController {
     private final WarehouseService warehouseService;
     private final WarehouseMapper warehouseMapper;
+
+    @GetMapping("/list")
+    public ResponseEntity<List<WarehouseListResponse>> getWarehouseList() {
+        return new ResponseEntity<>(warehouseService.getAll().stream()
+                .map(warehouseMapper::warehouseToListResponse)
+                .collect(Collectors.toList()),
+                HttpStatus.OK);
+    }
 
     @GetMapping
     public ResponseEntity<List<WarehouseResponse>> getAll() {
