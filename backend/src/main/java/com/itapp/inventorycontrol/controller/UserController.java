@@ -63,28 +63,5 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<TokenResponse> login(@RequestBody @Validated LoginRequest request) {
-        return new ResponseEntity<>(
-                new TokenResponse(tokenService.generateToken(request.getEmail(), request.getPassword())),
-                HttpStatus.OK);
-    }
-
-    @PostMapping("/logout")
-    public ResponseEntity<Void> logout() {
-        String jwt = (String) SecurityContextHolder.getContext().getAuthentication().getCredentials();
-        tokenService.deleteToken(jwt);
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @GetMapping()
-    public ResponseEntity<List<UserResponse>> getAllEmployees() {
-        return new ResponseEntity<>(userService.getAll().stream()
-                .map(userMapper::userToResponse)
-                .collect(Collectors.toList()),
-                HttpStatus.OK);
-    }
-
-    //TODO: add endpoint to change roles of employees
+    //TODO: add endpoint to change password
 }
