@@ -33,7 +33,6 @@ public class UserService {
         user.setCompany(manager.getCompany());
         user.setRegisteredBy(manager.getId());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(UserRole.EMPLOYEE);
         return userRepository.save(user);
     }
 
