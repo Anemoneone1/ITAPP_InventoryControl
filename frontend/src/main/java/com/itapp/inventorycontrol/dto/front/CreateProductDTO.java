@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class CreateStorageItemDTO {
+public class CreateProductDTO {
     private String creationDate;
     private String batchNumber;
     private Long itemId;

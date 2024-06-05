@@ -17,15 +17,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 
-@AllArgsConstructor
 @Controller
 @RequestMapping("/auth")
 public class AuthenticationController {
     private final RestTemplate restTemplate;
-    @Value("${external_api}")
-//    @Value("${internal_api}")
-    private String api;
+    private final String api;
 
+    public AuthenticationController(RestTemplate restTemplate, @Value("${internal_api}") String api) {
+        this.restTemplate = restTemplate;
+        this.api = api;
+    }
     @GetMapping("/login")
     public String login(Model model, HttpSession httpSession) {
         String token = (String) httpSession.getAttribute("token");

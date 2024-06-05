@@ -11,9 +11,9 @@ import java.util.Date;
 @Data
 public class StorageItemDTO {
     private Long id;
-    private String storageItemName;
+    private String itemName;
     private Date expirationDate;
     private Double weight;
-    private String containerName;
+    private String storageSpaceName;
     private String warehouseName;
 }

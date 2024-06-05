@@ -19,15 +19,16 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-@AllArgsConstructor
 @Controller
 @RequestMapping("/user")
 public class UserController {
     private final RestTemplate restTemplate;
-
-//    @Value("${internal_api}")
-    @Value("${external_api}")
     private final String api;
+
+    public UserController(RestTemplate restTemplate, @Value("${internal_api}") String api) {
+        this.restTemplate = restTemplate;
+        this.api = api;
+    }
 
     @PostMapping("/create_employee")
     public String createEmployee(@Validated @ModelAttribute("createEmployee") CreateEmployeeDTO createEmployeeDTO, HttpServletRequest httpServletRequest){

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>QR Code Scanner</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+    #qr-reader {
+      width: auto;
+      height: auto;
+      max-height: max-content;
+      max-height: max-content;
+      padding: 15px;
+      margin: auto;
+    }
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 1em;
+      background: white;
+      border: 1px solid black;
+      z-index: 1000;
+    }
+    .popup button {
+      margin-top: 1em;
+    }
+  </style>
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+  <script>
+    function onScanSuccess(decodedText, decodedResult) {
+      fetch('/process-qr', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ data: decodedText })
+      })
+              .then(response => response.json())
+              .then(data => {
+                if (data.action === -1) {
+                  showPopup('No such product exists', () => {
+                    alert('Whoops...');
+                  });
+                } else {
+                  showPopup('Do you want to delete this item?', () => {
+                    var id = data.action;
+                    data.body.delete();
+                    fetch('/process-qr', {
+                      method: 'DELETE',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({ data: id })
+                    })
+                    alert('Deleting item...');
+                  });
+                }
+              })
+              .catch(error => console.error('Error:', error));
+    }
+
+    function showPopup(message, callback) {
+      const popup = document.getElementById('popup');
+      const popupMessage = document.getElementById('popup-message');
+      const popupButton = document.getElementById('popup-button');
+
+      popupMessage.textContent = message;
+      popup.style.display = 'block';
+
+      popupButton.onclick = () => {
+        popup.style.display = 'none';
+        callback();
+      };
+
+      const closeButton = document.createElement('button');
+      closeButton.textContent = 'Close';
+      closeButton.onclick = () => {
+        popup.style.display = 'none';
+      };
+      popup.appendChild(closeButton);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const html5QrCode = new Html5Qrcode("qr-reader");
+
+      html5QrCode.start(
+              { facingMode: "environment" },
+              {
+                fps: 10,
+                qrbox: 350
+              },
+              onScanSuccess
+      ).catch(err => {
+        console.error('Unable to start scanning.', err);
+        document.getElementById('qr-reader').innerHTML = "Unable to access camera. Please ensure you have given camera permissions.";
+      });
+    });
+  </script>
+</head>
+<body>
+<div id="qr-reader"></div>
+<div id="popup" class="popup">
+  <p id="popup-message"></p>
+  <button id="popup-button">OK</button>
+</div>
+</body>
+</html>
