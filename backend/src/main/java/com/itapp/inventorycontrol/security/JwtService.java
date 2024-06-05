@@ -89,4 +89,8 @@ public class JwtService {
                 .orElseThrow(() -> new ICException(ICErrorType.IC_101));
         tokenRepository.delete(savedToken);
     }
+
+    public void deleteAllTokensOfUser(Long userId) {
+        tokenRepository.deleteAllByUserId(userId);
+    }
 }

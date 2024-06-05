@@ -28,4 +28,8 @@ public class TokenService {
     public void deleteToken(String token) {
         jwtService.deleteToken(token);
     }
+
+    public void deleteAllTokensOfUser(Long userId) {
+        jwtService.deleteAllTokensOfUser(userId);
+    }
 }
