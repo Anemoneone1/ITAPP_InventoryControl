@@ -28,8 +28,6 @@ public class UserService {
 
     public User createEmployee(User user) {
         User manager = signedInUsernameGetter.getUser();
-        validateManager(manager);
-
         user.setCompany(manager.getCompany());
         user.setRegisteredBy(manager.getId());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -38,8 +36,6 @@ public class UserService {
 
     public void removeEmployee(Long employeeId) {
         User manager = signedInUsernameGetter.getUser();
-        validateManager(manager);
-
         User employee = getByIdOrThrow(employeeId);
         validateEmployeeInCompany(manager, employee);
 
@@ -58,12 +54,6 @@ public class UserService {
     public List<User> getAll(){
         User signedUser = signedInUsernameGetter.getUser();
         return userRepository.findAllByCompanyId(signedUser.getCompany().getId());
-    }
-
-    private void validateManager(User manager){
-        if(manager.getRole() != UserRole.MANAGER){
-            throw new ICException(ICErrorType.IC_202);
-        }
     }
 
     private void validateEmployeeInCompany(User manager, User employee) {
