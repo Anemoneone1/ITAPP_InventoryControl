@@ -22,6 +22,7 @@ public class BoxService {
     private final BoxItemRepository boxItemRepository;
     private final ItemService itemService;
     private final StorageService storageService;
+    private final ComplianceAgreementService complianceAgreementService;
 
     public Box getOrThrow(Long id) {
         return boxRepository.findById(id).orElseThrow(() -> new ICException(ICErrorType.IC_802));
@@ -48,6 +49,7 @@ public class BoxService {
         itemService.validateUserOwnsItem(user, item);
 
         // check compliances
+        complianceAgreementService.validateComplianceAgreementsActive(item.getCompliances());
         // check storage conditions
 
         Box box = new Box();
