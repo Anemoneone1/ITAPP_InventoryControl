@@ -17,17 +17,17 @@ public class Storage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
-
-    @Column(name = "description", nullable = false)
-    private String description;
-
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "warehouse_id", nullable = false)
     private Warehouse warehouse;
+
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Column(name = "description", nullable = false)
+    private String description;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

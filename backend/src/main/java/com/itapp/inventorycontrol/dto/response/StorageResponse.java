@@ -9,15 +9,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class StorageSpaceResponse {
+public class StorageResponse {
     private Long id;
+    private Long warehouseId;
     private String name;
     private String description;
-    private Double squareSpace;
-    private Double takenSpace;
-    private Double weight;
-    private boolean stationary;
-    private String parentStorageSpaceId;
-    private String warehouseId;
     private List<StorageConditionResponse> storageConditions;
 }

@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class StorageSpaceDeleteRequest {
-    private Long storageSpaceId;
+public class StorageDeleteRequest {
+    private Long storageId;
 }

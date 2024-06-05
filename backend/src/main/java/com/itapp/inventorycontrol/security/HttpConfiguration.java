@@ -79,10 +79,11 @@ public class HttpConfiguration {
                 .requestMatchers(HttpMethod.PUT, APIVersion.current + "/item").hasAnyRole(roles(MANAGER))
                 .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/item").hasAnyRole(roles(MANAGER))
 
-                // StorageSpaceController
-                .requestMatchers(HttpMethod.GET, APIVersion.current + "/storage").authenticated()
-                .requestMatchers(HttpMethod.POST, APIVersion.current + "/storage").authenticated()
-                .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/storage").authenticated()
+                // StorageController
+                .requestMatchers(HttpMethod.GET, APIVersion.current + "/storage").hasAnyRole(roles(MANAGER))
+                .requestMatchers(HttpMethod.POST, APIVersion.current + "/storage").hasAnyRole(roles(MANAGER))
+                .requestMatchers(HttpMethod.PUT, APIVersion.current + "/storage").hasAnyRole(roles(MANAGER))
+                .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/storage").hasAnyRole(roles(MANAGER))
 
                 // StorageSpaceItemController
                 .requestMatchers(HttpMethod.GET, APIVersion.current + "/storage-items").authenticated()

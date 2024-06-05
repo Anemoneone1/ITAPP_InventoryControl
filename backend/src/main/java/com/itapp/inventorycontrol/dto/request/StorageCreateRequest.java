@@ -9,13 +9,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class StorageSpaceCreateRequest {
+public class StorageCreateRequest {
+    private Long warehouseId;
     private String name;
     private String description;
-    private Double squareSpace;
-    private Double weight;
-    private boolean stationary;
-    private Long parentStorageSpaceId;
-    private Long warehouseId;
     private List<Long> storageConditionIds;
 }
