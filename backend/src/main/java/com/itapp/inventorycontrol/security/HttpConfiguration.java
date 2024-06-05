@@ -57,9 +57,9 @@ public class HttpConfiguration {
                 .requestMatchers(HttpMethod.GET, APIVersion.current + "/dashboard").authenticated()
 
                 // StorageConditionController
-                .requestMatchers(HttpMethod.GET, APIVersion.current + "/storage-condition").authenticated()
-                .requestMatchers(HttpMethod.POST, APIVersion.current + "/storage-condition").authenticated()
-                .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/storage-condition").authenticated()
+                .requestMatchers(HttpMethod.GET, APIVersion.current + "/storage-condition").hasAnyRole(roles(MANAGER))
+                .requestMatchers(HttpMethod.POST, APIVersion.current + "/storage-condition").hasAnyRole(roles(MANAGER))
+                .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/storage-condition").hasAnyRole(roles(MANAGER))
 
                 // ComplianceController
                 .requestMatchers(HttpMethod.GET, APIVersion.current + "/compliance").authenticated()

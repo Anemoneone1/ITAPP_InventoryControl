@@ -30,6 +30,7 @@ public class StorageConditionService {
     public StorageCondition create(StorageCondition storageCondition) {
         User user = signedInUsernameGetter.getUser();
         storageCondition.setCompany(user.getCompany());
+
         return storageConditionRepository.save(storageCondition);
     }
 
