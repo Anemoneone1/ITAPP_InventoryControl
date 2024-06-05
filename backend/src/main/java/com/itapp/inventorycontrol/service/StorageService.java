@@ -22,7 +22,6 @@ import java.util.Set;
 public class StorageService {
     private final SignedInUsernameGetter signedInUsernameGetter;
     private final StorageRepository storageRepository;
-    private final StorageConditionStorageRepository storageConditionStorageRepository;
     private final StorageConditionService storageConditionService;
     private final WarehouseService warehouseService;
     private final StorageConditionStorageService storageConditionStorageService;
@@ -49,7 +48,7 @@ public class StorageService {
 
         // save data
         storageRepository.save(storage);
-        storageConditionStorageRepository.saveAll(storageConditionStorages);
+        storageConditionStorageService.saveAll(storageConditionStorages);
         storage.setStorageConditions(new HashSet<>(storageConditionStorages));
 
         return storage;
@@ -77,7 +76,7 @@ public class StorageService {
 
         // save data
         storageRepository.save(storage);
-        storageConditionStorageRepository.saveAll(storageConditionStorages);
+        storageConditionStorageService.saveAll(storageConditionStorages);
         storage.setStorageConditions(new HashSet<>(storageConditionStorages));
 
         return storage;
