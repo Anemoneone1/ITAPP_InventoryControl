@@ -9,6 +9,5 @@ import lombok.NoArgsConstructor;
 @Data
 public class WarehouseCreateRequest {
     private String name;
-    private Double squareSpace;
     private String address;
 }

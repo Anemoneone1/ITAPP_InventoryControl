@@ -10,6 +10,5 @@ import lombok.NoArgsConstructor;
 public class WarehouseEditRequest {
     private Long id;
     private String name;
-    private Double squareSpace;
     private String address;
 }

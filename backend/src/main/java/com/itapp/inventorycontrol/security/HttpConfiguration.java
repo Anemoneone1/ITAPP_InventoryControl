@@ -49,9 +49,9 @@ public class HttpConfiguration {
 
                 // WarehouseController
                 .requestMatchers(HttpMethod.GET, APIVersion.current + "/warehouse").authenticated()
-                .requestMatchers(HttpMethod.POST, APIVersion.current + "/warehouse").authenticated()
-                .requestMatchers(HttpMethod.PUT, APIVersion.current + "/warehouse").authenticated()
-                .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/warehouse").authenticated()
+                .requestMatchers(HttpMethod.POST, APIVersion.current + "/warehouse").hasAnyRole(roles(MANAGER))
+                .requestMatchers(HttpMethod.PUT, APIVersion.current + "/warehouse").hasAnyRole(roles(MANAGER))
+                .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/warehouse").hasAnyRole(roles(MANAGER))
 
                 // DashboardController
                 .requestMatchers(HttpMethod.GET, APIVersion.current + "/dashboard").authenticated()

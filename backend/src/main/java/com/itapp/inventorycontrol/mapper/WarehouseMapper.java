@@ -13,6 +13,5 @@ public interface WarehouseMapper {
 
     Warehouse requestToWarehouse(WarehouseEditRequest request);
 
-    @Mapping(target = "takenSpace", expression = "java(warehouse.getSquareSpace() - warehouse.getFreeSpace())")
     WarehouseResponse warehouseToResponse(Warehouse warehouse);
 }

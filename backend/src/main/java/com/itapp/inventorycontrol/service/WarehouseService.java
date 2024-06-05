@@ -29,7 +29,7 @@ public class WarehouseService {
     public Warehouse create(Warehouse warehouse) {
         User user = signedInUsernameGetter.getUser();
         warehouse.setCompany(user.getCompany());
-        warehouse.setFreeSpace(warehouse.getSquareSpace());
+
         return warehouseRepository.save(warehouse);
     }
 
@@ -38,12 +38,7 @@ public class WarehouseService {
         Warehouse warehouse = getOrThrow(request.getId());
         validateUserOwnsWarehouse(user, warehouse);
 
-        if (request.getSquareSpace() < warehouse.getFreeSpace()) {
-            throw new ICException(ICErrorType.IC_302);
-        }
-
         warehouse.setName(request.getName());
-        warehouse.setSquareSpace(request.getSquareSpace());
         warehouse.setAddress(request.getAddress());
 
         return warehouseRepository.save(warehouse);

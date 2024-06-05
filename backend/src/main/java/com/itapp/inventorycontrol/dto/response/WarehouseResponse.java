@@ -10,7 +10,5 @@ import lombok.NoArgsConstructor;
 public class WarehouseResponse {
     private Long id;
     private String name;
-    private Double squareSpace;
-    private Double takenSpace;
     private String address;
 }
