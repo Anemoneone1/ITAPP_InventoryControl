@@ -10,6 +10,7 @@ import com.itapp.inventorycontrol.security.SignedInUsernameGetter;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
@@ -33,6 +34,8 @@ public class ComplianceAgreementService {
         Compliance compliance = complianceService.getOrThrow(complianceAgreement.getCompliance().getId());
         complianceService.validateUserOwnsCompliance(user, compliance);
 
+        validateEndIsAfterStart(complianceAgreement.getStart(), complianceAgreement.getEnd());
+
         return complianceAgreementRepository.save(complianceAgreement);
     }
 
@@ -49,6 +52,12 @@ public class ComplianceAgreementService {
     public void validateUserOwnsCompliance(User user, Compliance compliance) {
         if (compliance.getCompany().getId() != user.getCompany().getId()) {
             throw new ICException(ICErrorType.IC_702);
+        }
+    }
+
+    private void validateEndIsAfterStart(Date start, Date end){
+        if(!end.after(start)){
+            throw new ICException(ICErrorType.IC_703);
         }
     }
 }
