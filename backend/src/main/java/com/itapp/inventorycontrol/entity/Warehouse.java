@@ -31,7 +31,6 @@ public class Warehouse {
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "warehouse")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL)
     private Set<Storage> storages;
 }

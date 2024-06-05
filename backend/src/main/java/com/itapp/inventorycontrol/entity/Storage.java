@@ -31,13 +31,11 @@ public class Storage {
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "storage")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(mappedBy = "storage", cascade = CascadeType.ALL)
     private Set<Box> boxes;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "storage")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(mappedBy = "storage", cascade = CascadeType.ALL)
     private Set<StorageConditionStorage> storageConditions;
 }

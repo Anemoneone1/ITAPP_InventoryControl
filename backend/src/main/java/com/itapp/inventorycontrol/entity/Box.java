@@ -31,7 +31,6 @@ public class Box {
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "box")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(mappedBy = "box", cascade = CascadeType.ALL)
     private Set<BoxItem> items;
 }
