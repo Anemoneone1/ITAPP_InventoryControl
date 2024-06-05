@@ -57,6 +57,7 @@ public class UserController {
     @DeleteMapping("/employee")
     public ResponseEntity<UserResponse> removeEmployee(@RequestBody EmployeeDeleteRequest request) {
         userService.removeEmployee(request.getEmployeeId());
+        tokenService.deleteAllTokensOfUser(request.getEmployeeId());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
