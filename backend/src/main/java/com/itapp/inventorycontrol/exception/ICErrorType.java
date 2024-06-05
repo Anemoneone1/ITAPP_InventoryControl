@@ -34,9 +34,12 @@ public enum ICErrorType {
     // compliance
     IC_701("Compliance not found", HttpStatus.NOT_FOUND),
 
+    // compliance agreement
+    IC_801("Compliance agreement not found", HttpStatus.NOT_FOUND),
+
     // storage space
-    IC_801("Storage space not found", HttpStatus.NOT_FOUND),
-    IC_802("Storage space item not found", HttpStatus.NOT_FOUND);
+    IC_901("Storage space not found", HttpStatus.NOT_FOUND),
+    IC_902("Storage space item not found", HttpStatus.NOT_FOUND);
 
     private final String description;
     private final HttpStatus status;

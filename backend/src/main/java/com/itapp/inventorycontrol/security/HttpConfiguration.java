@@ -62,9 +62,14 @@ public class HttpConfiguration {
                 .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/storage-condition").hasAnyRole(roles(MANAGER))
 
                 // ComplianceController
-                .requestMatchers(HttpMethod.GET, APIVersion.current + "/compliance").authenticated()
-                .requestMatchers(HttpMethod.POST, APIVersion.current + "/compliance").authenticated()
-                .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/compliance").authenticated()
+                .requestMatchers(HttpMethod.GET, APIVersion.current + "/compliance").hasAnyRole(roles(MANAGER))
+                .requestMatchers(HttpMethod.POST, APIVersion.current + "/compliance").hasAnyRole(roles(MANAGER))
+                .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/compliance").hasAnyRole(roles(MANAGER))
+
+                // ComplianceAgreementController
+                .requestMatchers(HttpMethod.GET, APIVersion.current + "/compliance-agreement").hasAnyRole(roles(MANAGER))
+                .requestMatchers(HttpMethod.POST, APIVersion.current + "/compliance-agreement").hasAnyRole(roles(MANAGER))
+                .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/compliance-agreement").hasAnyRole(roles(MANAGER))
 
                 // ItemController
                 .requestMatchers(HttpMethod.GET, APIVersion.current + "/item").authenticated()
