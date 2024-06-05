@@ -16,6 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.util.Arrays;
 
+import static com.itapp.inventorycontrol.entity.UserRole.EMPLOYEE;
 import static com.itapp.inventorycontrol.entity.UserRole.MANAGER;
 
 @Configuration
@@ -48,13 +49,13 @@ public class HttpConfiguration {
                 .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/user/employee").hasAnyRole(roles(MANAGER))
 
                 // WarehouseController
-                .requestMatchers(HttpMethod.GET, APIVersion.current + "/warehouse").authenticated()
+                .requestMatchers(HttpMethod.GET, APIVersion.current + "/warehouse").hasAnyRole(roles(MANAGER, EMPLOYEE))
                 .requestMatchers(HttpMethod.POST, APIVersion.current + "/warehouse").hasAnyRole(roles(MANAGER))
                 .requestMatchers(HttpMethod.PUT, APIVersion.current + "/warehouse").hasAnyRole(roles(MANAGER))
                 .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/warehouse").hasAnyRole(roles(MANAGER))
 
                 // DashboardController
-                .requestMatchers(HttpMethod.GET, APIVersion.current + "/dashboard").authenticated()
+                .requestMatchers(HttpMethod.GET, APIVersion.current + "/dashboard").hasAnyRole(roles(MANAGER, EMPLOYEE))
 
                 // StorageConditionController
                 .requestMatchers(HttpMethod.GET, APIVersion.current + "/storage-condition").hasAnyRole(roles(MANAGER))
@@ -72,10 +73,11 @@ public class HttpConfiguration {
                 .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/compliance-agreement").hasAnyRole(roles(MANAGER))
 
                 // ItemController
-                .requestMatchers(HttpMethod.GET, APIVersion.current + "/item").authenticated()
-                .requestMatchers(HttpMethod.POST, APIVersion.current + "/item").authenticated()
-                .requestMatchers(HttpMethod.PUT, APIVersion.current + "/item").authenticated()
-                .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/item").authenticated()
+                .requestMatchers(HttpMethod.GET, APIVersion.current + "/item/*").hasAnyRole(roles(MANAGER, EMPLOYEE))
+                .requestMatchers(HttpMethod.GET, APIVersion.current + "/item").hasAnyRole(roles(MANAGER))
+                .requestMatchers(HttpMethod.POST, APIVersion.current + "/item").hasAnyRole(roles(MANAGER))
+                .requestMatchers(HttpMethod.PUT, APIVersion.current + "/item").hasAnyRole(roles(MANAGER))
+                .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/item").hasAnyRole(roles(MANAGER))
 
                 // StorageSpaceController
                 .requestMatchers(HttpMethod.GET, APIVersion.current + "/storage").authenticated()

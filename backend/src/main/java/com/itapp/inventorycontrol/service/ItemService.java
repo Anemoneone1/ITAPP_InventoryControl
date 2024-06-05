@@ -23,7 +23,9 @@ public class ItemService {
     private final ItemComplianceRepository itemComplianceRepository;
     private final StorageConditionItemRepository storageConditionItemRepository;
     private final ComplianceService complianceService;
+    private final ItemComplianceService itemComplianceService;
     private final StorageConditionService storageConditionService;
+    private final StorageConditionItemService storageConditionItemService;
 
     public Item getOrThrow(Long id) {
         return itemRepository.findById(id).orElseThrow(() -> new ICException(ICErrorType.IC_401));
@@ -34,43 +36,77 @@ public class ItemService {
         return itemRepository.findAllByCompanyId(user.getCompany().getId());
     }
 
+    public Item getById(Long itemId) {
+        Item item = getOrThrow(itemId);
+        User user = signedInUsernameGetter.getUser();
+        validateUserOwnsItem(user, item);
+
+        return item;
+    }
+
     @Transactional
     public Item create(Item item, List<Long> complianceIds, List<Long> storageConditionIds) {
         User user = signedInUsernameGetter.getUser();
         item.setCompany(user.getCompany());
-        itemRepository.save(item);
 
+        // generate new ItemCompliances
         Set<Compliance> compliances = complianceService.getAllByIds(complianceIds, user.getCompany().getId());
-        if (compliances.size() != complianceIds.size()) {
-            throw new ICException(ICErrorType.IC_701);
-        }
         List<ItemCompliance> itemCompliances = compliances.stream()
                 .map(compliance -> ItemCompliance.builder().compliance(compliance).item(item).build())
                 .toList();
-        itemComplianceRepository.saveAll(itemCompliances);
-        item.setCompliances(new HashSet<>(itemCompliances));
 
+        // generate new StorageConditionItems
         Set<StorageCondition> storageConditions = storageConditionService.getAllByIds(storageConditionIds, user.getCompany().getId());
-        if (storageConditions.size() != storageConditionIds.size()) {
-            throw new ICException(ICErrorType.IC_601);
-        }
         List<StorageConditionItem> storageConditionItems = storageConditions.stream()
                 .map(storageCondition -> StorageConditionItem.builder().storageCondition(storageCondition).item(item).build())
                 .toList();
+
+        // save data
+        itemRepository.save(item);
+        itemComplianceRepository.saveAll(itemCompliances);
+        item.setCompliances(new HashSet<>(itemCompliances));
         storageConditionItemRepository.saveAll(storageConditionItems);
         item.setStorageConditions(new HashSet<>(storageConditionItems));
 
         return item;
     }
 
-    public Item edit(Item request) {
+    @Transactional
+    public Item edit(Item request, List<Long> complianceIds, List<Long> storageConditionIds) {
         User user = signedInUsernameGetter.getUser();
         Item item = getOrThrow(request.getId());
         validateUserOwnsItem(user, item);
 
-        //TODO: delete previous connections and create new ones
+        // generate new ItemCompliances
+        Set<Compliance> compliances = complianceService.getAllByIds(complianceIds, user.getCompany().getId());
+        List<ItemCompliance> itemCompliances = compliances.stream()
+                .map(compliance -> ItemCompliance.builder().compliance(compliance).item(item).build())
+                .toList();
 
-        return itemRepository.save(item);
+        // generate new StorageConditionItems
+        Set<StorageCondition> storageConditions = storageConditionService.getAllByIds(storageConditionIds, user.getCompany().getId());
+        List<StorageConditionItem> storageConditionItems = storageConditions.stream()
+                .map(storageCondition -> StorageConditionItem.builder().storageCondition(storageCondition).item(item).build())
+                .toList();
+
+        // delete existing links
+        itemComplianceService.deleteAllByItemId(item.getId());
+        storageConditionItemService.deleteAllByItemId(item.getId());
+
+        // update data
+        item.setCompany(user.getCompany());
+        item.setLifetime(request.getLifetime());
+        item.setName(request.getName());
+        item.setDescription(request.getDescription());
+
+        // save data
+        itemRepository.save(item);
+        itemComplianceRepository.saveAll(itemCompliances);
+        item.setCompliances(new HashSet<>(itemCompliances));
+        storageConditionItemRepository.saveAll(storageConditionItems);
+        item.setStorageConditions(new HashSet<>(storageConditionItems));
+
+        return item;
     }
 
     public void delete(Long id) {

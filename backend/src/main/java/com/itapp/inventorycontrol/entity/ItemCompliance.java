@@ -17,12 +17,12 @@ public class ItemCompliance {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "compliance_id", nullable = false)
-    private Compliance compliance;
+    @JoinColumn(name = "item_id", nullable = false)
+    private Item item;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_id", nullable = false)
-    private Item item;
+    @JoinColumn(name = "compliance_id", nullable = false)
+    private Compliance compliance;
 }

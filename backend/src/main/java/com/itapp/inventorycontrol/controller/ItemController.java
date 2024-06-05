@@ -22,6 +22,14 @@ public class ItemController {
     private final ItemService itemService;
     private final ItemMapper itemMapper;
 
+    @GetMapping("/{itemId}")
+    public ResponseEntity<ItemResponse> getById(@PathVariable("itemId") Long itemId) {
+        Item item = itemService.getById(itemId);
+
+        return new ResponseEntity<>(
+                itemMapper.itemToResponse(item),
+                HttpStatus.OK);
+    }
     @GetMapping
     public ResponseEntity<List<ItemResponse>> getAll() {
         return new ResponseEntity<>(itemService.getAll().stream()
@@ -41,7 +49,7 @@ public class ItemController {
 
     @PutMapping
     public ResponseEntity<ItemResponse> edit(@RequestBody ItemEditRequest request) {
-        Item item = itemService.edit(itemMapper.requestToItem(request));
+        Item item = itemService.edit(itemMapper.requestToItem(request), request.getComplianceIds(), request.getStorageConditionIds());
 
         return new ResponseEntity<>(
                 itemMapper.itemToResponse(item),

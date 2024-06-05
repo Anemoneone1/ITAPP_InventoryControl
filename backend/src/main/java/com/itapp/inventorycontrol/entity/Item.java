@@ -15,11 +15,11 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "square_space", nullable = false)
-    private Double squareSpace;
-
-    @Column(name = "weight", nullable = false)
-    private Double weight;
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id", nullable = false)
+    private Company company;
 
     @Column(name = "lifetime", nullable = false)
     private Integer lifetime;
@@ -32,22 +32,16 @@ public class Item {
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id", nullable = false)
-    private Company company;
-
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @OneToMany(mappedBy = "item")
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private Set<ItemCompliance> compliances;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "item")
-    private Set<BoxItem> storageSpaces;
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    private Set<BoxItem> boxItems;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "item")
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private Set<StorageConditionItem> storageConditions;
 }

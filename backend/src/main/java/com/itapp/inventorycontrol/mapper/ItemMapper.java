@@ -21,6 +21,7 @@ public interface ItemMapper {
 
     @Mapping(target = "id", source = "compliance.id")
     @Mapping(target = "name", source = "compliance.name")
+    @Mapping(target = "description", source = "compliance.description")
     ComplianceResponse itemComplianceToComplianceResponse(ItemCompliance itemCompliance);
 
     @Mapping(target = "id", source = "storageCondition.id")

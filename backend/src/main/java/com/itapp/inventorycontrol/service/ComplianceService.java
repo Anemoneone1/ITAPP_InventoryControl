@@ -43,7 +43,11 @@ public class ComplianceService {
     }
 
     public Set<Compliance> getAllByIds(List<Long> complianceIds, Long companyId) {
-        return complianceRepository.findAllByCompanyIdAndIdIn(companyId, complianceIds);
+        Set<Compliance> compliances = complianceRepository.findAllByCompanyIdAndIdIn(companyId, complianceIds);
+        if (compliances.size() != complianceIds.size()) {
+            throw new ICException(ICErrorType.IC_701);
+        }
+        return compliances;
     }
 
     public void validateUserOwnsCompliance(User user, Compliance compliance) {

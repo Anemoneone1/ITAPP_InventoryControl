@@ -11,11 +11,9 @@ import java.util.List;
 @Data
 public class ItemResponse {
     private Long id;
+    private Integer lifetime;
     private String name;
     private String description;
-    private Double squareSpace;
-    private Double weight;
-    private Integer lifetime;
     private List<ComplianceResponse> compliances;
     private List<StorageConditionResponse> storageConditions;
 }

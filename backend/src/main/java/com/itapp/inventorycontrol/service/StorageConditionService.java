@@ -43,7 +43,11 @@ public class StorageConditionService {
     }
 
     public Set<StorageCondition> getAllByIds(List<Long> storageConditionIds, Long companyId) {
-        return storageConditionRepository.findAllByCompanyIdAndIdIn(companyId, storageConditionIds);
+        Set<StorageCondition> storageConditions = storageConditionRepository.findAllByCompanyIdAndIdIn(companyId, storageConditionIds);
+        if (storageConditions.size() != storageConditionIds.size()) {
+            throw new ICException(ICErrorType.IC_601);
+        }
+        return storageConditions;
     }
 
     private void validateUserOwnsStorageCondition(User user, StorageCondition storageCondition) {

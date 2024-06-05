@@ -11,10 +11,8 @@ import java.util.List;
 @Data
 public class ItemEditRequest {
     private Long id;
-    private String name;
-    private Double squareSpace;
-    private Double weight;
     private Integer lifetime;
+    private String name;
     private String description;
     private List<Long> complianceIds;
     private List<Long> storageConditionIds;
