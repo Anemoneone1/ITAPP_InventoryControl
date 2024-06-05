@@ -2,6 +2,7 @@ package com.itapp.inventorycontrol.service;
 
 import com.itapp.inventorycontrol.entity.Compliance;
 import com.itapp.inventorycontrol.entity.ComplianceAgreement;
+import com.itapp.inventorycontrol.entity.ItemCompliance;
 import com.itapp.inventorycontrol.entity.User;
 import com.itapp.inventorycontrol.exception.ICErrorType;
 import com.itapp.inventorycontrol.exception.ICException;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @Service
@@ -35,6 +37,7 @@ public class ComplianceAgreementService {
         complianceService.validateUserOwnsCompliance(user, compliance);
 
         validateEndIsAfterStart(complianceAgreement.getStart(), complianceAgreement.getEnd());
+        validateNoOverlappingAgreements(complianceAgreement);
 
         return complianceAgreementRepository.save(complianceAgreement);
     }
@@ -55,9 +58,28 @@ public class ComplianceAgreementService {
         }
     }
 
-    private void validateEndIsAfterStart(Date start, Date end){
-        if(!end.after(start)){
+    private void validateEndIsAfterStart(Date start, Date end) {
+        if (!end.after(start)) {
             throw new ICException(ICErrorType.IC_703);
+        }
+    }
+
+    private void validateNoOverlappingAgreements(ComplianceAgreement agreement) {
+        List<ComplianceAgreement> agreements = complianceAgreementRepository.findAllByComplianceIdAndEndAfter(
+                agreement.getCompliance().getId(), agreement.getStart());
+        if (!agreements.isEmpty()) {
+            throw new ICException(ICErrorType.IC_704);
+        }
+    }
+
+    public void validateComplianceAgreementsActive(Set<ItemCompliance> compliances) {
+        if (compliances.isEmpty()) return;
+
+        List<ComplianceAgreement> complianceList = complianceAgreementRepository.findAllByComplianceIdInAndDateBetween(
+                compliances.stream().map(ic -> ic.getCompliance().getId()).toList(),
+                new Date());
+        if (complianceList.size() != compliances.size()) {
+            throw new ICException(ICErrorType.IC_705);
         }
     }
 }

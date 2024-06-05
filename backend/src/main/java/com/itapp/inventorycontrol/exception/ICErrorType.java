@@ -33,6 +33,8 @@ public enum ICErrorType {
     IC_701("Compliance not found", HttpStatus.NOT_FOUND),
     IC_702("Compliance agreement not found", HttpStatus.NOT_FOUND),
     IC_703("Compliance agreement end is before start", HttpStatus.BAD_REQUEST),
+    IC_704("Another agreement already active", HttpStatus.BAD_REQUEST),
+    IC_705("No active satisfactory agreement", HttpStatus.BAD_REQUEST),
 
     // storage space
     IC_801("Storage not found", HttpStatus.NOT_FOUND),
