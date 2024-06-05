@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Agreement</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+
+    header p {
+      margin: 5px 0;
+    }
+
+    nav {
+      background-color: #555;
+      padding: 10px;
+      text-align: center;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    nav ul li {
+      margin: 0 10px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    nav ul li a:hover {
+      background-color: #444;
+    }
+
+    main {
+      flex: 1;
+      padding: 20px;
+    }
+
+    form {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    form h2 {
+      margin-top: 0;
+    }
+
+    form label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    form input[type="text"],
+    form input[type="date"],
+    form select {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    form button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      background-color: #4CAF50;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    form button:hover {
+      background-color: #45a049;
+    }
+
+    footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Inventory Management System</h1>
+</header>
+
+<nav>
+  <ul>
+    <li><a th:href="@{/dashboard}">Dashboard</a></li>
+    <li><a th:href="@{/compliance}">Compliance List</a></li>
+  </ul>
+</nav>
+
+<main>
+  <form th:action="@{/compliances/agreement}" th:object="${agreementCreationDTO}" method="post">
+    <h2>Create Agreement</h2>
+    <label for="compliance">Compliance:</label>
+    <select id="compliance" th:field="*{complianceId}" required>
+      <option value="" disabled selected>Select Compliance</option>
+      <option th:each="compliance : ${compliances}" th:value="${compliance.id}" th:text="${compliance.name}"></option>
+    </select>
+
+    <label for="start">Start Date:</label>
+    <input type="date" id="start" th:field="*{start}" required>
+
+    <label for="end">End Date:</label>
+    <input type="date" id="end" th:field="*{end}" required>
+
+    <button type="submit">Create Agreement</button>
+  </form>
+</main>
+
+<footer>
+  &copy; 2024 Your Company Name
+</footer>
+</body>
+</html>

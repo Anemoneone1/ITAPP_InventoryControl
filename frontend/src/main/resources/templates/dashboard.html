@@ -162,11 +162,11 @@
 
 <nav>
   <ul>
-    <li th:if="${dashboardDTO.role == 'manager'}"><a href="employee_list.html">Employees List</a></li>
+    <li th:if="${dashboardDTO.role == 'manager'}"><a th:href="@{/user/employee_list}">Employees List</a></li>
     <li><a th:href="@{/item_list}">Product List</a></li>
     <li th:if="${dashboardDTO.role == 'manager'}"><a href="#" onclick="showWarehousePopup()">Add Warehouse</a></li>
-    <li th:if="${dashboardDTO.role == 'manager'}"><a href="#">Item List</a></li>
-    <li><a href="#">Compliances List</a></li>
+    <li th:if="${dashboardDTO.role == 'manager'}"><a th:href="@{/item_list}">Item List</a></li>
+    <li><a th:href="@{/compliance}">Compliances List</a></li>
     <li><a href="#">Warnings List</a>
       <span th:if="${dashboardDTO.warnings > 0}" class="warnings-badge" th:text="${dashboardDTO.warnings}"></span>
     </li>

@@ -1,10 +1,9 @@
 package com.itapp.inventorycontrol.controller;
 
-import com.itapp.inventorycontrol.dto.front.CreateEmployeeDTO;
+import com.itapp.inventorycontrol.dto.creation.CreateEmployeeDTO;
 import com.itapp.inventorycontrol.dto.front.EmployeeDTO;
 import com.itapp.inventorycontrol.dto.front.TokenDTO;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;

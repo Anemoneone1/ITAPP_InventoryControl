@@ -1,4 +1,4 @@
-package com.itapp.inventorycontrol.dto.front;
+package com.itapp.inventorycontrol.dto.creation;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

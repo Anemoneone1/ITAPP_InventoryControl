@@ -1,47 +1,247 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Compliances List</title>
-  <link rel="stylesheet" href="../static/styles/styles.css"> <!-- Link to the external CSS file -->
+  <title>Compliance and Agreements</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+
+    header p {
+      margin: 5px 0;
+    }
+
+    nav {
+      background-color: #555;
+      padding: 10px;
+      text-align: center;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    nav ul li {
+      margin: 0 10px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    nav ul li a:hover {
+      background-color: #444;
+    }
+
+    main {
+      flex: 1;
+      padding: 20px;
+      display: flex;
+    }
+
+    .compliance-list {
+      flex: 1;
+      padding-right: 20px;
+    }
+
+    .compliance-details {
+      flex: 2;
+    }
+
+    .compliance {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .compliance h3 {
+      font-size: 20px;
+      margin-top: 0;
+    }
+
+    .compliance p {
+      margin: 5px 0;
+    }
+
+    .agreement-list {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .agreement {
+      border-bottom: 1px solid #ccc;
+      padding: 10px 0;
+    }
+
+    .agreement:last-child {
+      border-bottom: none;
+    }
+
+    .agreement p {
+      margin: 5px 0;
+    }
+
+    .agreement span {
+      display: block;
+    }
+
+    footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 20px;
+      background: white;
+      border: 1px solid black;
+      z-index: 1000;
+      width: 80%;
+      max-width: 500px;
+    }
+
+    .popup input[type="text"], .popup textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .popup button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      background-color: #4CAF50;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .popup button:hover {
+      background-color: #45a049;
+    }
+
+    .popup button.close {
+      background-color: #d9534f;
+    }
+
+    .popup button.close:hover {
+      background-color: #c9302c;
+    }
+  </style>
+  <script>
+    function openCompliancePopup() {
+      document.getElementById('compliancePopup').style.display = 'block';
+    }
+
+    function closeCompliancePopup() {
+      document.getElementById('compliancePopup').style.display = 'none';
+    }
+  </script>
 </head>
 <body>
 <header>
   <h1>Inventory Management System</h1>
-  <nav>
-    <ul>
-      <li><a href="#">Dashboard</a></li>
-      <li><a href="#">Warehouses</a></li>
-      <li><a href="#">Employees</a></li>
-      <li><a href="#">Products</a></li>
-      <!-- Add more navigation links as needed -->
-    </ul>
-  </nav>
-  <div id="sorting">
-    <label for="sort">Sort By:</label>
-    <select id="sort">
-      <option value="expiry_date">Expiry Date</option>
-      <option value="recently_added">Recently Added</option>
-    </select>
-  </div>
 </header>
 
+<nav>
+  <ul>
+    <li><a th:href="@{/dashboard}">Dashboard</a></li>
+    <li><a href="#" onclick="openCompliancePopup()">Create Compliance</a></li>
+    <li><a th:href="@{/compliance/agreement}">Create Agreement</a></li>
+  </ul>
+</nav>
+
 <main>
-  <h2>Compliances List</h2>
-  <div id="compliances">
-    <!-- Each compliance will have its own section -->
-    <div class="compliance">
-      <h3>Compliance Name 1</h3>
-      <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      <p>Active from <span class="date">January 1, 2024</span> to <span class="date">December 31, 2025</span></p>
+  <div class="compliance-list">
+    <h2>Compliances</h2>
+    <div th:each="compliance : ${compliances}" class="compliance">
+      <h3 th:text="${compliance.name}"></h3>
+      <p th:text="${compliance.description}"></p>
+      <button th:onclick="'showAgreements(' + ${compliance.id} + ')'">View Agreements</button>
     </div>
-    <!-- Add more compliances as needed -->
+  </div>
+  <div class="compliance-details" id="complianceDetails">
+    <h2>Agreements</h2>
+    <div th:each="compliance : ${compliances}">
+      <div class="agreement-list" th:if="${compliance.agreements.size() > 0}" th:id="'agreements-' + ${compliance.id}">
+        <h3 th:text="'Agreements for ' + ${compliance.name}"></h3>
+        <div th:each="agreement : ${compliance.agreements}" class="agreement">
+          <p><strong>Start Date:</strong> <span th:text="${agreement.start}"></span></p>
+          <p><strong>End Date:</strong> <span th:text="${agreement.end}"></span></p>
+        </div>
+      </div>
+    </div>
   </div>
 </main>
+
+<div id="compliancePopup" class="popup">
+  <h2>Create Compliance</h2>
+  <form th:action="@{/compliance}" method="post">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+    <label for="description">Description:</label>
+    <textarea id="description" name="description" rows="4" required></textarea>
+    <button type="submit">Create Compliance</button>
+    <button type="button" class="close" onclick="closeCompliancePopup()">Close</button>
+  </form>
+</div>
 
 <footer>
   &copy; 2024 Your Company Name
 </footer>
+
+<script>
+  function showAgreements(complianceId) {
+    const agreementsDivs = document.querySelectorAll('.agreement-list');
+    agreementsDivs.forEach(div => {
+      div.style.display = 'none';
+    });
+
+    const selectedDiv = document.getElementById('agreements-' + complianceId);
+    if (selectedDiv) {
+      selectedDiv.style.display = 'block';
+    }
+  }
+</script>
 </body>
 </html>

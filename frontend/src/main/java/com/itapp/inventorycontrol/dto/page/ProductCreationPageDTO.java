@@ -1,5 +1,7 @@
-package com.itapp.inventorycontrol.dto.front;
+package com.itapp.inventorycontrol.dto.page;
 
+import com.itapp.inventorycontrol.dto.front.ItemDTO;
+import com.itapp.inventorycontrol.dto.front.StorageSpaceDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

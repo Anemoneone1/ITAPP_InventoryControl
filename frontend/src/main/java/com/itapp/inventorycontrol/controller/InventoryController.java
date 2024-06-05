@@ -1,9 +1,13 @@
 package com.itapp.inventorycontrol.controller;
 
+import com.itapp.inventorycontrol.dto.creation.CreateItemDTO;
+import com.itapp.inventorycontrol.dto.creation.CreateProductDTO;
+import com.itapp.inventorycontrol.dto.creation.CreateWarehouseDTO;
 import com.itapp.inventorycontrol.dto.front.*;
+import com.itapp.inventorycontrol.dto.page.DashboardDTO;
+import com.itapp.inventorycontrol.dto.page.ItemCreationPageDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;

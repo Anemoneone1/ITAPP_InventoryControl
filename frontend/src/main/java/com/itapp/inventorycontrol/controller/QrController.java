@@ -1,7 +1,5 @@
 package com.itapp.inventorycontrol.controller;
 
-import com.itapp.inventorycontrol.dto.front.CreateEmployeeDTO;
-import com.itapp.inventorycontrol.dto.front.TokenDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
