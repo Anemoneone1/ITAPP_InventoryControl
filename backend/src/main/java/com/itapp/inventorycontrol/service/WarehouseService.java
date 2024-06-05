@@ -57,4 +57,11 @@ public class WarehouseService {
             throw new ICException(ICErrorType.IC_301);
         }
     }
+
+    public void validateUserOwnsWarehouse(User user, Long warehouseId) {
+        Warehouse warehouse = getOrThrow(warehouseId);
+        if (warehouse.getCompany().getId() != user.getCompany().getId()) {
+            throw new ICException(ICErrorType.IC_301);
+        }
+    }
 }
