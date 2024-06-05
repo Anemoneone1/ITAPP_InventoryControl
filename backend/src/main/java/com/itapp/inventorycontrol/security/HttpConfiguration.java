@@ -1,6 +1,7 @@
 package com.itapp.inventorycontrol.security;
 
 import com.itapp.inventorycontrol.controller.APIVersion;
+import com.itapp.inventorycontrol.entity.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.util.Arrays;
+
+import static com.itapp.inventorycontrol.entity.UserRole.MANAGER;
 
 @Configuration
 @EnableWebSecurity
@@ -29,13 +34,18 @@ public class HttpConfiguration {
                 .requestMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll()
                 .requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
 
+                // CompanyController
+                .requestMatchers(HttpMethod.POST, APIVersion.current + "/company").permitAll()
+
+                // AuthenticationController
+                .requestMatchers(HttpMethod.POST, APIVersion.current + "/auth/login").permitAll()
+                .requestMatchers(HttpMethod.POST, APIVersion.current + "/auth/logout").authenticated()
+
                 // UserController
-                .requestMatchers(HttpMethod.POST, APIVersion.current + "/user/manager").permitAll()
-                .requestMatchers(HttpMethod.POST, APIVersion.current + "/user/login").permitAll()
-                .requestMatchers(HttpMethod.POST, APIVersion.current + "/user/logout").authenticated()
-                .requestMatchers(HttpMethod.POST, APIVersion.current + "/user/employee").authenticated()
-                .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/user/employee").authenticated()
-                .requestMatchers(HttpMethod.GET, APIVersion.current + "/user").authenticated()
+                .requestMatchers(HttpMethod.GET, APIVersion.current + "/user").hasAnyRole(roles(MANAGER))
+                .requestMatchers(HttpMethod.POST, APIVersion.current + "/user/manager").hasAnyRole(roles(MANAGER))
+                .requestMatchers(HttpMethod.POST, APIVersion.current + "/user/employee").hasAnyRole(roles(MANAGER))
+                .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/user/employee").hasAnyRole(roles(MANAGER))
 
                 // WarehouseController
                 .requestMatchers(HttpMethod.GET, APIVersion.current + "/warehouse").authenticated()
@@ -85,5 +95,9 @@ public class HttpConfiguration {
         http.cors(Customizer.withDefaults());
 
         return http.build();
+    }
+
+    private String[] roles(UserRole... userRoles) {
+        return Arrays.stream(userRoles).map(Enum::name).toArray(String[]::new);
     }
 }
