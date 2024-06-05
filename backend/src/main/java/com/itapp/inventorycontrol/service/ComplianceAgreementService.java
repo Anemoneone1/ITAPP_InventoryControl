@@ -20,7 +20,7 @@ public class ComplianceAgreementService {
     private final ComplianceService complianceService;
 
     public ComplianceAgreement getOrThrow(Long id) {
-        return complianceAgreementRepository.findById(id).orElseThrow(() -> new ICException(ICErrorType.IC_801));
+        return complianceAgreementRepository.findById(id).orElseThrow(() -> new ICException(ICErrorType.IC_702));
     }
 
     public List<ComplianceAgreement> getAll() {
@@ -48,7 +48,7 @@ public class ComplianceAgreementService {
 
     public void validateUserOwnsCompliance(User user, Compliance compliance) {
         if (compliance.getCompany().getId() != user.getCompany().getId()) {
-            throw new ICException(ICErrorType.IC_801);
+            throw new ICException(ICErrorType.IC_702);
         }
     }
 }
