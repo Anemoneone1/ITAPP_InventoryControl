@@ -9,9 +9,12 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class BoxItemResponse {
+public class BoxFullResponse {
     private Long id;
-    private Long itemId;
+    private String uuid;
+    private String serialNumber;
+    private String itemName;
+    private Integer amount;
     private Date creationDate;
     private Date expirationDate;
 }

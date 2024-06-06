@@ -14,5 +14,5 @@ public class StorageFullResponse {
     private String name;
     private String description;
     private List<StorageConditionResponse> storageConditions;
-    private List<BoxResponse> boxes;
+    private List<BoxFullResponse> boxes;
 }
