@@ -45,7 +45,7 @@ public class AuthenticationController {
 //        headers.set("Authorization", "Basic " + encodedCredentials);
         HttpEntity<UserLoginDTO> requestEntity = new HttpEntity<>(userLoginDTO);
 
-        ResponseEntity<TokenDTO> responseEntity = restTemplate.exchange(api + "/user/login", HttpMethod.POST, requestEntity, TokenDTO.class);
+        ResponseEntity<TokenDTO> responseEntity = restTemplate.exchange(api + "/auth/login", HttpMethod.POST, requestEntity, TokenDTO.class);
 
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
             request.getSession().setAttribute("token", responseEntity.getBody().getToken());
@@ -64,6 +64,12 @@ public class AuthenticationController {
         }
         model.addAttribute("registerDTO", new RegisterDTO());
         return "register";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession httpSession) {
+        httpSession.invalidate();
+        return "redirect:/dashboard";
     }
 
     @PostMapping("/register")
