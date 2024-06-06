@@ -169,6 +169,9 @@
     <li><a th:href="@{/box}">Create Box</a></li>
     <li th:if="${dashboardDTO.role == 'MANAGER'}"><a th:href="@{/storage_creation}">Create Storage</a></li>
     <li><a th:href="@{/qrscanner}">QR Scanner</a>
+    <li><a th:href="@{/auth/logout}">Logout</a>
+    <li>
+
     <!--    <li><a href="#">Warnings List</a>-->
 <!--      <span th:if="${dashboardDTO.warnings > 0}" class="warnings-badge" th:text="${dashboardDTO.warnings}"></span>-->
     </li>
@@ -212,7 +215,7 @@
 </main>
 
 <footer>
-  &copy; 2024 Your Company Name
+  &copy; 2024 ITApp
 </footer>
 
 <script>
