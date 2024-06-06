@@ -14,6 +14,6 @@ public interface ComplianceRepository extends JpaRepository<Compliance, Long> {
 
     Set<Compliance> findAllByCompanyIdAndIdIn(Long companyId, List<Long> complianceIds);
 
-    @Query("SELECT c FROM Compliance c WHERE c.company.id = :companyId AND c.agreements IS NOT EMPTY")
+    @Query("SELECT c FROM Compliance c WHERE c.company.id = :companyId")
     List<Compliance> findAllByCompanyIdAndAgreementsNotEmpty(Long companyId);
 }
