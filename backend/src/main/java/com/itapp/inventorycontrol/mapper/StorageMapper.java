@@ -3,13 +3,14 @@ package com.itapp.inventorycontrol.mapper;
 import com.itapp.inventorycontrol.dto.request.StorageCreateRequest;
 import com.itapp.inventorycontrol.dto.request.StorageEditRequest;
 import com.itapp.inventorycontrol.dto.response.StorageConditionResponse;
+import com.itapp.inventorycontrol.dto.response.StorageFullResponse;
 import com.itapp.inventorycontrol.dto.response.StorageResponse;
 import com.itapp.inventorycontrol.entity.Storage;
 import com.itapp.inventorycontrol.entity.StorageConditionStorage;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper
+@Mapper(uses = BoxMapper.class)
 public interface StorageMapper {
     @Mapping(target = "warehouse.id", source = "warehouseId")
     Storage requestToStorageSpace(StorageCreateRequest request);
@@ -19,6 +20,8 @@ public interface StorageMapper {
 
     @Mapping(target = "warehouseId", source = "warehouse.id")
     StorageResponse storageSpaceToResponse(Storage storage);
+
+    StorageFullResponse storageSpaceToFullResponse(Storage storage);
 
     @Mapping(target = "id", source = "storageCondition.id")
     @Mapping(target = "condition", source = "storageCondition.condition")

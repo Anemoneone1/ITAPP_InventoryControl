@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface StorageRepository extends JpaRepository<Storage, Long> {
     List<Storage> findAllByWarehouseCompanyId(Long id);
+
+    List<Storage> findAllByWarehouseCompanyIdAndWarehouseId(Long id, Long warehouseId);
 }

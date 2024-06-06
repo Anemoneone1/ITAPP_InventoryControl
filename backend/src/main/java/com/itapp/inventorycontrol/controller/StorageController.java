@@ -3,6 +3,7 @@ package com.itapp.inventorycontrol.controller;
 import com.itapp.inventorycontrol.dto.request.StorageCreateRequest;
 import com.itapp.inventorycontrol.dto.request.StorageDeleteRequest;
 import com.itapp.inventorycontrol.dto.request.StorageEditRequest;
+import com.itapp.inventorycontrol.dto.response.StorageFullResponse;
 import com.itapp.inventorycontrol.dto.response.StorageResponse;
 import com.itapp.inventorycontrol.entity.Storage;
 import com.itapp.inventorycontrol.mapper.StorageMapper;
@@ -26,6 +27,14 @@ public class StorageController {
     public ResponseEntity<List<StorageResponse>> getAll() {
         return new ResponseEntity<>(storageService.getAll().stream()
                 .map(storageMapper::storageSpaceToResponse)
+                .collect(Collectors.toList()),
+                HttpStatus.OK);
+    }
+
+    @GetMapping("/warehouse/{warehouse_id}")
+    public ResponseEntity<List<StorageFullResponse>> getFullByWarehouse(@PathVariable("warehouse_id") Long warehouseId) {
+        return new ResponseEntity<>(storageService.getAllByWarehouseId(warehouseId).stream()
+                .map(storageMapper::storageSpaceToFullResponse)
                 .collect(Collectors.toList()),
                 HttpStatus.OK);
     }

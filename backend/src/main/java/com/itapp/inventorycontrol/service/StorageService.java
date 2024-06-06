@@ -6,7 +6,6 @@ import com.itapp.inventorycontrol.entity.StorageConditionStorage;
 import com.itapp.inventorycontrol.entity.User;
 import com.itapp.inventorycontrol.exception.ICErrorType;
 import com.itapp.inventorycontrol.exception.ICException;
-import com.itapp.inventorycontrol.repository.StorageConditionStorageRepository;
 import com.itapp.inventorycontrol.repository.StorageRepository;
 import com.itapp.inventorycontrol.security.SignedInUsernameGetter;
 import jakarta.transaction.Transactional;
@@ -33,6 +32,13 @@ public class StorageService {
     public List<Storage> getAll() {
         User user = signedInUsernameGetter.getUser();
         return storageRepository.findAllByWarehouseCompanyId(user.getCompany().getId());
+    }
+
+    public List<Storage> getAllByWarehouseId(Long warehouseId) {
+        User user = signedInUsernameGetter.getUser();
+        warehouseService.validateUserOwnsWarehouse(user, warehouseId);
+
+        return storageRepository.findAllByWarehouseCompanyIdAndWarehouseId(user.getCompany().getId(), warehouseId);
     }
 
     @Transactional

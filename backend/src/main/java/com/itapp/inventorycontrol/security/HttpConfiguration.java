@@ -85,6 +85,7 @@ public class HttpConfiguration {
 
                 // StorageController
                 .requestMatchers(HttpMethod.GET, APIVersion.current + "/storage").hasAnyRole(roles(MANAGER))
+                .requestMatchers(HttpMethod.GET, APIVersion.current + "/storage/warehouse/*").hasAnyRole(roles(MANAGER, EMPLOYEE))
                 .requestMatchers(HttpMethod.POST, APIVersion.current + "/storage").hasAnyRole(roles(MANAGER))
                 .requestMatchers(HttpMethod.PUT, APIVersion.current + "/storage").hasAnyRole(roles(MANAGER))
                 .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/storage").hasAnyRole(roles(MANAGER))
