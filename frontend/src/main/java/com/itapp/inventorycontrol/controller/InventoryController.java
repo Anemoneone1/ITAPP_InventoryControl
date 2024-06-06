@@ -102,7 +102,7 @@ public class InventoryController {
         headers.add("Authorization", "Bearer " + token);
         HttpEntity<String> requestEntity = new HttpEntity<>(headers);
 
-        ResponseEntity<List<ItemDTO>> responseEntity = restTemplate.exchange(api + "/items", HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<ItemDTO>>() {});
+        ResponseEntity<List<ItemDTO>> responseEntity = restTemplate.exchange(api + "/item", HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<ItemDTO>>() {});
 
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
             System.out.println("Request failed with status code: " + responseEntity.getStatusCode());
@@ -160,7 +160,7 @@ public class InventoryController {
         HttpEntity<String> requestEntity = new HttpEntity<>(headers);
 
 
-        ResponseEntity<ItemCreationPageDTO> responseEntity = restTemplate.exchange(api + "/item_creation_page", HttpMethod.GET, requestEntity, ItemCreationPageDTO.class);
+        ResponseEntity<ItemCreationPageDTO> responseEntity = restTemplate.exchange(api + "/item/compliances-and-conditions", HttpMethod.GET, requestEntity, ItemCreationPageDTO.class);
 
         if (responseEntity.getStatusCode() != HttpStatus.OK){
             System.out.println("Request failed with status code: " + responseEntity.getStatusCode());

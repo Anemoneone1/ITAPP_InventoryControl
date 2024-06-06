@@ -38,7 +38,7 @@ public class ComplianceController {
         headers.add("Authorization", "Bearer " + token);
         HttpEntity<String> requestEntity = new HttpEntity<>(headers);
 
-        ResponseEntity<List<CompliancePageDTO>> responseEntity = restTemplate.exchange(api + "/compliance-agreement", HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<CompliancePageDTO>>() {});
+        ResponseEntity<List<CompliancePageDTO>> responseEntity = restTemplate.exchange(api + "/compliance/history", HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<CompliancePageDTO>>() {});
 
         if (responseEntity.getStatusCode() != HttpStatus.OK){
             System.out.println("Request failed with status code: " + responseEntity.getStatusCode());
@@ -61,13 +61,13 @@ public class ComplianceController {
         headers.add("Authorization", "Bearer " + token);
         HttpEntity<CreateComplianceDTO> requestEntity = new HttpEntity<>(createComplianceDTO, headers);
 
-        ResponseEntity<Object> responseEntity = restTemplate.exchange(api + "/compliance-agreement", HttpMethod.POST, requestEntity, Object.class);
+        ResponseEntity<Object> responseEntity = restTemplate.exchange(api + "/compliance", HttpMethod.POST, requestEntity, Object.class);
 
         if (responseEntity.getStatusCode() != HttpStatus.OK){
             System.out.println("Request failed with status code: " + responseEntity.getStatusCode());
         }
 
-        return "compliance_list";
+        return "redirect:/compliance";
     }
 
     @GetMapping("/agreement")
@@ -80,7 +80,7 @@ public class ComplianceController {
         headers.add("Authorization", "Bearer " + token);
         HttpEntity<String> requestEntity = new HttpEntity<>(headers);
 
-        ResponseEntity<List<ComplianceDTO>> responseEntity = restTemplate.exchange(api + "/compliance-agreement", HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<ComplianceDTO>>() {});
+        ResponseEntity<List<ComplianceDTO>> responseEntity = restTemplate.exchange(api + "/compliance", HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<ComplianceDTO>>() {});
 
         if (responseEntity.getStatusCode() != HttpStatus.OK){
             System.out.println("Request failed with status code: " + responseEntity.getStatusCode());

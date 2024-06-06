@@ -39,15 +39,13 @@ public class UserController {
         headers.add("Authorization", "Bearer " + token);
         HttpEntity<CreateEmployeeDTO> requestEntity = new HttpEntity<>(createEmployeeDTO, headers);
 
-
-
         ResponseEntity<TokenDTO> responseEntity = restTemplate.exchange(api + "/user/employee", HttpMethod.POST, requestEntity, TokenDTO.class);
 
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
-            return "employee_list";
+            return "redirect:/user/employee_list";
         }
         System.out.println("Request failed with status code: " + responseEntity.getStatusCode());
-        return "employee_list";
+        return "redirect:/user/employee_list";
     }
 
     @GetMapping("/employee_list")
@@ -60,7 +58,7 @@ public class UserController {
         headers.add("Authorization", "Bearer " + token);
         HttpEntity<String> requestEntity = new HttpEntity<>(headers);
 
-        ResponseEntity<List<EmployeeDTO>> responseEntity = restTemplate.exchange(api + "/TODO", HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<EmployeeDTO>>() {});
+        ResponseEntity<List<EmployeeDTO>> responseEntity = restTemplate.exchange(api + "/user", HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<EmployeeDTO>>() {});
 
         model.addAttribute("createEmployeeDTO", new CreateEmployeeDTO());
         model.addAttribute("employeeListDTO", responseEntity.getBody());

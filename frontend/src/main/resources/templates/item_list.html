@@ -120,8 +120,8 @@
 
 <nav>
   <ul>
-    <li><a href="dashboard.html">Dashboard</a></li>
-    <li><a href="create_item.html">Create Item</a></li>
+    <li><a th:href="@{/dashboard}">Dashboard</a></li>
+    <li><a th:href="@{/item/create}">Create Item</a></li>
   </ul>
 </nav>
 
@@ -130,8 +130,6 @@
   <div th:each="item : ${itemList}" class="item">
     <h3 th:text="${item.name}"></h3>
     <p><strong>Description:</strong> <span th:text="${item.description}"></span></p>
-    <p><strong>Square Space:</strong> <span th:text="${item.squareSpace}"></span></p>
-    <p><strong>Weight:</strong> <span th:text="${item.weight}"></span></p>
     <p><strong>Lifetime:</strong> <span th:text="${item.lifetime}"></span></p>
 
     <div th:if="${item.compliances.size() > 0}">
@@ -148,7 +146,7 @@
       </ul>
     </div>
 
-    <form th:action="@{'/delete_item/' + ${item.id}}" method="post">
+    <form th:action="@{'/item/' + ${item.id}}" method="delete">
       <input type="hidden" name="_method" value="DELETE" />
       <button type="submit">Delete</button>
     </form>

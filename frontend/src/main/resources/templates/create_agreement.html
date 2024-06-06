@@ -129,7 +129,7 @@
 </nav>
 
 <main>
-  <form th:action="@{/compliances/agreement}" th:object="${agreementCreationDTO}" method="post">
+  <form th:action="@{/compliance/agreement}" th:object="${agreementCreationDTO}" method="post">
     <h2>Create Agreement</h2>
     <label for="compliance">Compliance:</label>
     <select id="compliance" th:field="*{complianceId}" required>

@@ -70,7 +70,7 @@ public class AuthenticationController {
     public String register(@Validated @ModelAttribute("registerDTO") RegisterDTO registerDTO, HttpServletRequest request) {
         HttpEntity<RegisterDTO> requestEntity = new HttpEntity<>(registerDTO);
 
-        ResponseEntity<TokenDTO> responseEntity = restTemplate.exchange(api + "/user/login", HttpMethod.POST, requestEntity, TokenDTO.class);
+        ResponseEntity<TokenDTO> responseEntity = restTemplate.exchange(api + "/company", HttpMethod.POST, requestEntity, TokenDTO.class);
 
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
             request.getSession().setAttribute("token", responseEntity.getBody().getToken());

@@ -125,25 +125,17 @@
 
 <nav>
   <ul>
-    <li><a href="dashboard.html">Dashboard</a></li>
-    <li><a href="item_list.html">Item List</a></li>
+    <li><a th:href="@{/dashboard}">Dashboard</a></li>
+    <li><a th:href="@{/item_list}">Item List</a></li>
   </ul>
 </nav>
 
 <main>
   <h2>Create Item</h2>
-  <form id="itemForm" th:action="@{/item/create}" method="post">
+  <form id="itemForm" th:action="@{/item}" method="post">
     <div>
       <label for="name">Name:</label>
       <input type="text" id="name" name="name" required>
-    </div>
-    <div>
-      <label for="squareSpace">Square Space:</label>
-      <input type="number" id="squareSpace" name="squareSpace" required>
-    </div>
-    <div>
-      <label for="weight">Weight:</label>
-      <input type="number" id="weight" name="weight" required>
     </div>
     <div>
       <label for="lifetime">Lifetime:</label>
@@ -155,7 +147,7 @@
     </div>
     <div>
       <p>Compliances:</p>
-      <th:block th:each="compliance : ${itemCreationPageDTO.complianceList}">
+      <th:block th:each="compliance : ${itemCreationPageDTO.compliances}">
         <label th:for="${'compliance-' + compliance.id}">
           <input type="checkbox" th:id="${'compliance-' + compliance.id}" th:name="'complianceIds'" th:value="${compliance.id}">
           <span th:text="${compliance.name}"></span>
@@ -164,7 +156,7 @@
     </div>
     <div>
       <p>Storage Conditions:</p>
-      <th:block th:each="condition : ${itemCreationPageDTO.storageConditionList}">
+      <th:block th:each="condition : ${itemCreationPageDTO.storageConditions}">
         <label th:for="${'condition-' + condition.id}">
           <input type="checkbox" th:id="${'condition-' + condition.id}" th:name="'storageConditionIds'" th:value="${condition.id}">
           <span th:text="${condition.condition}"></span>

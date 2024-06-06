@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Inventory Management Dashboard</title>
-  <link rel="stylesheet" href="/styles/styles.css">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -162,13 +161,13 @@
 
 <nav>
   <ul>
-    <li th:if="${dashboardDTO.role == 'manager'}"><a th:href="@{/user/employee_list}">Employees List</a></li>
+    <li th:if="${dashboardDTO.role == 'MANAGER'}"><a th:href="@{/user/employee_list}">Employees List</a></li>
     <li><a th:href="@{/item_list}">Product List</a></li>
-    <li th:if="${dashboardDTO.role == 'manager'}"><a href="#" onclick="showWarehousePopup()">Add Warehouse</a></li>
-    <li th:if="${dashboardDTO.role == 'manager'}"><a th:href="@{/item_list}">Item List</a></li>
+    <li th:if="${dashboardDTO.role == 'MANAGER'}"><a href="#" onclick="showWarehousePopup()">Add Warehouse</a></li>
+    <li th:if="${dashboardDTO.role == 'MANAGER'}"><a th:href="@{/item_list}">Item List</a></li>
     <li><a th:href="@{/compliance}">Compliances List</a></li>
     <li><a href="#">Warnings List</a>
-      <span th:if="${dashboardDTO.warnings > 0}" class="warnings-badge" th:text="${dashboardDTO.warnings}"></span>
+<!--      <span th:if="${dashboardDTO.warnings > 0}" class="warnings-badge" th:text="${dashboardDTO.warnings}"></span>-->
     </li>
   </ul>
 </nav>
@@ -180,11 +179,9 @@
       <div>
         <p class="warehouse-name"><a th:href="@{'/warehouse/' + ${warehouse.id}}"><span th:text="${warehouse.name}"></span></a></p>
         <p class="warehouse-address">Address: <span th:text="${warehouse.address}"></span></p>
-        <p class="warehouse-space" th:text="'Space: ' + ${warehouse.takenSpace} + '/' + ${warehouse.squareSpace}"></p>
-        <p class="warehouse-space" th:text="'Fill: ' + (${warehouse.takenSpace}/${warehouse.squareSpace}*100).toFixed(1) + '%'"></p>
-        <span th:if="${warehouse.warnings > 0}" class="warnings-badge" th:text="${warehouse.warnings}"></span>
+<!--        <span th:if="${warehouse.warnings > 0}" class="warnings-badge" th:text="${warehouse.warnings}"></span>-->
       </div>
-      <form th:if="${dashboardDTO.role == 'manager'}" th:action="@{'/delete_warehouse/' + ${warehouse.id}}" method="post">
+      <form th:if="${dashboardDTO.role == 'MANAGER'}" th:action="@{'/warehouse/' + ${warehouse.id}}" method="delete">
         <input type="hidden" name="_method" value="DELETE" />
         <button type="submit">Delete</button>
       </form>
@@ -204,11 +201,6 @@
           <label for="address">Address:</label>
           <input type="text" id="address" name="address" th:field="*{address}">
           <span id="addressError" class="error" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></span>
-        </div>
-        <div>
-          <label for="space">Square Space:</label>
-          <input type="number" id="space" name="space" th:field="*{squareSpace}">
-          <span id="spaceError" class="error" th:if="${#fields.hasErrors('squareSpace')}" th:errors="*{squareSpace}"></span>
         </div>
         <button type="submit">Create Warehouse</button>
       </form>
