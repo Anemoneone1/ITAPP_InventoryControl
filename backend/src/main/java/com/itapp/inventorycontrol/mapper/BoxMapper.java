@@ -2,7 +2,6 @@ package com.itapp.inventorycontrol.mapper;
 
 import com.itapp.inventorycontrol.dto.response.BoxFullResponse;
 import com.itapp.inventorycontrol.dto.response.BoxResponse;
-import com.itapp.inventorycontrol.dto.warning.BoxWarning;
 import com.itapp.inventorycontrol.entity.Box;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -15,7 +14,4 @@ public interface BoxMapper {
 
     @Mapping(target = "itemName", source = "item.name")
     BoxFullResponse boxToFullResponse(Box box);
-
-    @Mapping(target = "boxId", source = "id")
-    BoxWarning boxToWarning(Box box);
 }

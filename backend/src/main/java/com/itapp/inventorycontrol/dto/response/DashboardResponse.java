@@ -15,5 +15,6 @@ public class DashboardResponse {
     private String userSurname;
     private String companyName;
     private UserRole role;
-    private List<WarehouseResponse> warehouses;
+    private Integer totalWarnings;
+    private List<WarehouseWithWarningResponse> warehouses;
 }
