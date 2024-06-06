@@ -44,7 +44,7 @@ public class StorageConditionService {
 
     public Set<StorageCondition> getAllByIds(List<Long> storageConditionIds, Long companyId) {
         Set<StorageCondition> storageConditions = storageConditionRepository.findAllByCompanyIdAndIdIn(companyId, storageConditionIds);
-        if (storageConditions.size() != storageConditionIds.size()) {
+        if (storageConditionIds != null && storageConditions.size() != storageConditionIds.size()) {
             throw new ICException(ICErrorType.IC_601);
         }
         return storageConditions;
