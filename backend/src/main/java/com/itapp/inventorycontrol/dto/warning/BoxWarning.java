@@ -1,5 +1,6 @@
 package com.itapp.inventorycontrol.dto.warning;
 
+import com.itapp.inventorycontrol.entity.Box;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class BoxWarning {
-    private Long boxId;
+    private Box box;
     private String reason;
 }

@@ -96,6 +96,9 @@ public class HttpConfiguration {
                 .requestMatchers(HttpMethod.POST, APIVersion.current + "/box").hasAnyRole(roles(MANAGER, EMPLOYEE))
                 .requestMatchers(HttpMethod.DELETE, APIVersion.current + "/box").hasAnyRole(roles(MANAGER, EMPLOYEE))
 
+                // WarningController
+                .requestMatchers(HttpMethod.GET, APIVersion.current + "/warning/boxes").hasAnyRole(roles(MANAGER, EMPLOYEE))
+
                 .anyRequest().denyAll()
         );
 

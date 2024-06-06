@@ -4,7 +4,6 @@ import com.itapp.inventorycontrol.dto.warning.BoxWarning;
 import com.itapp.inventorycontrol.dto.warning.ComplianceWarning;
 import com.itapp.inventorycontrol.entity.Box;
 import com.itapp.inventorycontrol.entity.Warehouse;
-import com.itapp.inventorycontrol.mapper.BoxMapper;
 import com.itapp.inventorycontrol.repository.BoxRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,9 +38,9 @@ public class WarningsService {
         List<BoxWarning> warnings = new ArrayList<>(boxes.size());
         for (Box box : boxes) {
             if (box.getExpirationDate().isBefore(now)) {
-                warnings.add(new BoxWarning(box.getId(), "Date expired"));
+                warnings.add(new BoxWarning(box, "Date expired"));
             } else {
-                warnings.add(new BoxWarning(box.getId(), "Date will be expired soon"));
+                warnings.add(new BoxWarning(box, "Date will be expired soon"));
             }
         }
         return warnings;

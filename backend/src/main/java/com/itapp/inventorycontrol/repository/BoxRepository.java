@@ -18,6 +18,6 @@ public interface BoxRepository extends JpaRepository<Box, Long> {
     @Query("SELECT b FROM Box b " +
             "WHERE b.storage.warehouse.id = :warehouseId " +
             "AND (b.expirationDate < :currentDate " +
-            "OR DATEDIFF(b.expirationDate, b.creationDate) * 0.2 < DATEDIFF(:currentDate, b.expirationDate))")
+            "OR DATEDIFF(b.expirationDate, b.creationDate) * 0.2 > DATEDIFF(b.expirationDate, :currentDate))")
     List<Box> findAllBoxesWithWarningsByWarehouse(Long warehouseId, LocalDate currentDate);
 }
