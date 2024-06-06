@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,5 +14,8 @@ public class BoxResponse {
     private String uuid;
     private Long storageId;
     private String serialNumber;
-    private List<BoxItemResponse> items;
+    private Long itemId;
+    private Integer amount;
+    private Date creationDate;
+    private Date expirationDate;
 }

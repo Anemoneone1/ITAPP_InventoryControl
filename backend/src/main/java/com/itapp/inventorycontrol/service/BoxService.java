@@ -1,20 +1,19 @@
 package com.itapp.inventorycontrol.service;
 
 import com.itapp.inventorycontrol.dto.request.BoxRequest;
-import com.itapp.inventorycontrol.entity.*;
+import com.itapp.inventorycontrol.entity.Box;
+import com.itapp.inventorycontrol.entity.Item;
+import com.itapp.inventorycontrol.entity.Storage;
+import com.itapp.inventorycontrol.entity.User;
 import com.itapp.inventorycontrol.exception.ICErrorType;
 import com.itapp.inventorycontrol.exception.ICException;
-import com.itapp.inventorycontrol.repository.BoxItemRepository;
 import com.itapp.inventorycontrol.repository.BoxRepository;
 import com.itapp.inventorycontrol.security.SignedInUsernameGetter;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,7 +22,6 @@ import java.util.UUID;
 public class BoxService {
     private final SignedInUsernameGetter signedInUsernameGetter;
     private final BoxRepository boxRepository;
-    private final BoxItemRepository boxItemRepository;
     private final ItemService itemService;
     private final StorageService storageService;
     private final ComplianceAgreementService complianceAgreementService;
@@ -58,21 +56,16 @@ public class BoxService {
         // check storage conditions
         storageConditionStorageService.validateStorageConditionsOfStorage(request.getStorageId(), item.getStorageConditions());
 
-        Box box = new Box();
-        box.setStorage(Storage.builder().id(request.getStorageId()).build());
-        box.setSerialNumber(request.getSerialNumber());
+        Box box = Box.builder()
+                .storage(Storage.builder().id(request.getStorageId()).build())
+                .serialNumber(request.getSerialNumber())
+                .item(item)
+                .amount(request.getItemNum())
+                .creationDate(request.getCreationDate())
+                .expirationDate(request.getCreationDate().plus(item.getLifetime(), ChronoUnit.DAYS))
+                .build();
         box = boxRepository.save(box);
         box.setUuid(UUID.nameUUIDFromBytes(box.getId().toString().getBytes()).toString());
-
-        LocalDate expirationDate = request.getCreationDate().plus(item.getLifetime(), ChronoUnit.DAYS);
-        List<BoxItem> boxItems = new ArrayList<>(request.getItemNum());
-        for (int i = 0; i < request.getItemNum(); i++) {
-            boxItems.add(BoxItem.builder()
-                    .box(box).item(item).creationDate(request.getCreationDate()).expirationDate(expirationDate)
-                    .build());
-        }
-        boxItemRepository.saveAll(boxItems);
-        box.setItems(new HashSet<>(boxItems));
 
         return box;
     }

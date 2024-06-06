@@ -38,7 +38,7 @@ public class Item {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
-    private Set<BoxItem> boxItems;
+    private Set<Box> boxes;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

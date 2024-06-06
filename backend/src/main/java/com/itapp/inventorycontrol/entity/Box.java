@@ -2,11 +2,10 @@ package com.itapp.inventorycontrol.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
-import java.util.Set;
+import java.time.LocalDate;
 
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -30,6 +29,16 @@ public class Box {
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "box", cascade = CascadeType.ALL)
-    private Set<BoxItem> items;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_id", nullable = false)
+    private Item item;
+
+    @Column(name = "amount", nullable = false)
+    private Integer amount;
+
+    @Column(name = "creation_date", nullable = false)
+    private LocalDate creationDate;
+
+    @Column(name = "expiration_date", nullable = false)
+    private LocalDate expirationDate;
 }
