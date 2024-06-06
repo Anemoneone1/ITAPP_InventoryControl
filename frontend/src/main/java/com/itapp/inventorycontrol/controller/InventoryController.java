@@ -333,13 +333,13 @@ public class InventoryController {
 
         model.addAttribute("warehouses", responseEntity.getBody());
 
-        ResponseEntity<List<StorageConditionDTO>> responseEntity2 = restTemplate.exchange(api + "/item", HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<StorageConditionDTO>>() {});
+        ResponseEntity<List<StorageConditionDTO>> responseEntity2 = restTemplate.exchange(api + "/storage-condition", HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<StorageConditionDTO>>() {});
         if (responseEntity2.getStatusCode() != HttpStatus.OK){
             System.out.println("Request failed with status code: " + responseEntity.getStatusCode());
             return "redirect:/dashboard";
         }
 
-        model.addAttribute("storageConditions", responseEntity.getBody());
+        model.addAttribute("storageConditions", responseEntity2.getBody());
         model.addAttribute("storageCreationDTO", new StorageCreationDTO());
 
         return "storage_creation";
