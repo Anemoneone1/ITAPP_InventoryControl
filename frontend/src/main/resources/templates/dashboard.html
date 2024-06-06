@@ -166,7 +166,10 @@
     <li th:if="${dashboardDTO.role == 'MANAGER'}"><a href="#" onclick="showWarehousePopup()">Add Warehouse</a></li>
     <li th:if="${dashboardDTO.role == 'MANAGER'}"><a th:href="@{/item_list}">Item List</a></li>
     <li><a th:href="@{/compliance}">Compliances List</a></li>
-    <li><a href="#">Warnings List</a>
+    <li><a th:href="@{/box}">Create Box</a></li>
+    <li th:if="${dashboardDTO.role == 'MANAGER'}"><a th:href="@{/storage_creation}">Create Storage</a></li>
+    <li><a th:href="@{/qrscanner}">QR Scanner</a>
+    <!--    <li><a href="#">Warnings List</a>-->
 <!--      <span th:if="${dashboardDTO.warnings > 0}" class="warnings-badge" th:text="${dashboardDTO.warnings}"></span>-->
     </li>
   </ul>

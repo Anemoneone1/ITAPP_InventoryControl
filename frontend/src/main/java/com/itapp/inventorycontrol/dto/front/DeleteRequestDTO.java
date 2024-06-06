@@ -7,9 +7,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class WarehouseDTO {
-    private long id;
-    private String name;
-    private String address;
-    private int warnings;
+public class DeleteRequestDTO {
+    private Long data;
+
+    public Long getData() {
+        return data;
+    }
+
+    public void setData(Long data) {
+        this.data = data;
+    }
 }

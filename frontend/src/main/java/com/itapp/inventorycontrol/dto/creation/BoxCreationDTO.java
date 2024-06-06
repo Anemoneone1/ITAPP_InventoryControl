@@ -4,12 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class CreateProductDTO {
-    private String creationDate;
-    private String serialNumber;
-    private Long itemId;
+public class BoxCreationDTO {
     private Long storageId;
+    private String serialNumber;
+    private int itemNum;
+    private Long itemId;
+    private LocalDate creationDate;
 }

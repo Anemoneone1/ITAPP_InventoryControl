@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+
+    header p {
+      margin: 5px 0;
+    }
+
+    nav {
+      background-color: #555;
+      padding: 10px;
+      text-align: center;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    nav ul li {
+      margin: 0 10px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    nav ul li a:hover {
+      background-color: #444;
+    }
+
+    main {
+      flex: 1;
+      padding: 20px;
+    }
+
+    .storage {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 20px;
+      margin-bottom: 20px;
+      display: flex;
+    }
+
+    .storage-info {
+      flex: 1;
+    }
+
+    .boxes {
+      flex: 2;
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .box {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      margin: 10px;
+      width: calc(33% - 20px);
+      box-sizing: border-box;
+    }
+
+    .box p {
+      margin: 5px 0;
+    }
+
+    .box button {
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #d9534f;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .box button:hover {
+      background-color: #c9302c;
+    }
+
+    footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Inventory Management System</h1>
+</header>
+
+<nav>
+  <ul>
+    <li><a th:href="@{/dashboard}">Dashboard</a></li>
+    <li><a th:href="create_storage.html">Create Storage</a></li>
+  </ul>
+</nav>
+
+<main>
+  <h2>Products</h2>
+  <div th:each="warehouse : ${warehouseStoragePage}" class="warehouse">
+      <div class="storage-info">
+        <h4 th:text="${warehouse.name}">Storage Name</h4>
+        <p th:text="'Description: ' + ${warehouse.description}">Storage Description</p>
+        <p>Storage Conditions:
+          <span th:each="condition, iterStat : ${warehouse.storageConditions}">
+          <span th:text="${condition.condition}"></span>
+          <span th:if="${!iterStat.last}">, </span>
+          </span>
+        </p>
+
+
+
+      </div>
+      <div class="boxes">
+        <div th:if="${warehouse.boxes}">
+          <div th:each="box : ${warehouse.boxes}" class="box">
+            <p><strong th:text="${box.uuid}">Box UUID</strong></p>
+            <p th:text="'Serial Number: ' + ${box.serialNumber}">Serial Number</p>
+            <p th:text="'Item ID: ' + ${box.itemName}">Item Name</p>
+            <p th:text="'Amount: ' + ${box.amount}">Amount</p>
+            <p th:text="'Creation Date: ' + ${box.creationDate}">Creation Date</p>
+            <p th:text="'Expiration Date: ' + ${box.expirationDate}">Expiration Date</p>
+            <button th:action="@{/delete_box/{id}(id=${box.id})}" method="delete">Delete</button>
+            <a th:href="@{/generate-qr/{data}(data=${box.uuid})}" target="_blank">Download QR Code</a>
+          </div>
+        </div>
+        <p th:unless="${warehouse.boxes}">No boxes available.</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  &copy; 2024 Your Company Name
+</footer>
+</body>
+</html>

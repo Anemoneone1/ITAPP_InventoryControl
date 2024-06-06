@@ -1,11 +1,10 @@
 package com.itapp.inventorycontrol.controller;
 
-import com.itapp.inventorycontrol.dto.creation.CreateItemDTO;
-import com.itapp.inventorycontrol.dto.creation.CreateProductDTO;
-import com.itapp.inventorycontrol.dto.creation.CreateWarehouseDTO;
+import com.itapp.inventorycontrol.dto.creation.*;
 import com.itapp.inventorycontrol.dto.front.*;
 import com.itapp.inventorycontrol.dto.page.DashboardDTO;
 import com.itapp.inventorycontrol.dto.page.ItemCreationPageDTO;
+import com.itapp.inventorycontrol.dto.page.WarehouseStorageDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/")
@@ -73,7 +73,7 @@ public class InventoryController {
         return "redirect:/dashboard";
     }
 
-    @PostMapping("/delete_warehouse/{id}")
+    @DeleteMapping("/delete_warehouse/{id}")
     public String deleteWarehouse(@PathVariable("id") Long warehouseId, HttpServletRequest httpServletRequest){
         String token = (String) httpServletRequest.getSession().getAttribute("token");
         if (token == null) {
@@ -224,22 +224,144 @@ public class InventoryController {
         return "create_item";
     }
 
-    @PostMapping("/create_product")
-    public String createStorageItem(@Validated @ModelAttribute("createStorageItemDTO") CreateProductDTO createProductDTO, HttpServletRequest httpServletRequest){
+    @GetMapping("/warehouse/{id}")
+    public String getWarehousePage(Model model, HttpServletRequest httpServletRequest, @PathVariable("id") Long id){
         String token = (String) httpServletRequest.getSession().getAttribute("token");
         if (token == null) {
             return "redirect:/auth/login";
         }
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + token);
-        HttpEntity<CreateProductDTO> requestEntity = new HttpEntity<>(createProductDTO, headers);
+        HttpEntity<Long> requestEntity = new HttpEntity<>(id, headers);
 
-        ResponseEntity<TokenDTO> responseEntity = restTemplate.exchange(api + "/storage-items", HttpMethod.POST, requestEntity, TokenDTO.class);
+        ResponseEntity<List<WarehouseStorageDTO>> responseEntity = restTemplate.exchange(api + "/storage/warehouse/" + id, HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<WarehouseStorageDTO>>() {});
+
+        if (responseEntity.getStatusCode() != HttpStatus.OK){
+            System.out.println("Request failed with status code: " + responseEntity.getStatusCode());
+            return "redirect:/dashboard";
+        }
+
+        model.addAttribute("warehouseStoragePage", responseEntity.getBody());
+        model.addAttribute("warehouseId", id);
+
+        return "warehouse_storage";
+    }
+
+
+    @DeleteMapping("/box/{id}")
+    public String deleteBox(@PathVariable("id") Long id, HttpServletRequest httpServletRequest){
+        String token = (String) httpServletRequest.getSession().getAttribute("token");
+        if (token == null) {
+            return "redirect:/auth/login";
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + token);
+        HttpEntity<Long> requestEntity = new HttpEntity<>(id, headers);
+
+        ResponseEntity<TokenDTO> responseEntity = restTemplate.exchange(api + "/box", HttpMethod.DELETE, requestEntity, TokenDTO.class);
+
+        if (responseEntity.getStatusCode() != HttpStatus.OK){
+            System.out.println("Request failed with status code: " + responseEntity.getStatusCode());
+            return "redirect:/dashboard";
+        }
+        return "redirect:/dashboard";
+    }
+
+    @GetMapping("/box")
+    public String getBoxCreationPage(Model model, HttpServletRequest httpServletRequest){
+        String token = (String) httpServletRequest.getSession().getAttribute("token");
+        if (token == null) {
+            return "redirect:/auth/login";
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + token);
+        HttpEntity<Objects> requestEntity = new HttpEntity<>(headers);
+        ResponseEntity<List<StorageDTO>> responseEntity = restTemplate.exchange(api + "/storage", HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<StorageDTO>>() {});
+        if (responseEntity.getStatusCode() != HttpStatus.OK){
+            System.out.println("Request failed with status code: " + responseEntity.getStatusCode());
+            return "redirect:/dashboard";
+        }
+
+        model.addAttribute("storages", responseEntity.getBody());
+
+        ResponseEntity<List<ItemDTO>> responseEntity2 = restTemplate.exchange(api + "/item", HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<ItemDTO>>() {});
+        if (responseEntity2.getStatusCode() != HttpStatus.OK){
+            System.out.println("Request failed with status code: " + responseEntity.getStatusCode());
+            return "redirect:/dashboard";
+        }
+
+        model.addAttribute("items", responseEntity2.getBody());
+        model.addAttribute("boxCreationDTO", new BoxCreationDTO());
+
+        return "box_creation";
+    }
+
+    @PostMapping("/create_box")
+    public String createBox(@Validated @ModelAttribute("boxCreationDTO") BoxCreationDTO boxCreationDTO, HttpServletRequest httpServletRequest){
+        String token = (String) httpServletRequest.getSession().getAttribute("token");
+        if (token == null) {
+            return "redirect:/auth/login";
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + token);
+        HttpEntity<BoxCreationDTO> requestEntity = new HttpEntity<>(boxCreationDTO, headers);
+
+        ResponseEntity<QrCodeDTO> responseEntity = restTemplate.exchange(api + "/box", HttpMethod.POST, requestEntity, QrCodeDTO.class);
+
 
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
-            return "redirect:/product_list";
+            return "redirect:/generate-qr/" + responseEntity.getBody().getUuid();
         }
         System.out.println("Request failed with status code: " + responseEntity.getStatusCode());
-        return "redirect:/product_list";
+        return "redirect:/dashboard";
+    }
+
+    @GetMapping("/storage_creation")
+    public String getStorageCreationPage(Model model, HttpServletRequest httpServletRequest){
+        String token = (String) httpServletRequest.getSession().getAttribute("token");
+        if (token == null) {
+            return "redirect:/auth/login";
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + token);
+        HttpEntity<Objects> requestEntity = new HttpEntity<>(headers);
+        ResponseEntity<List<WarehouseDTO>> responseEntity = restTemplate.exchange(api + "/warehouse", HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<WarehouseDTO>>() {});
+        if (responseEntity.getStatusCode() != HttpStatus.OK){
+            System.out.println("Request failed with status code: " + responseEntity.getStatusCode());
+            return "redirect:/dashboard";
+        }
+
+        model.addAttribute("warehouses", responseEntity.getBody());
+
+        ResponseEntity<List<StorageConditionDTO>> responseEntity2 = restTemplate.exchange(api + "/item", HttpMethod.GET, requestEntity, new ParameterizedTypeReference<List<StorageConditionDTO>>() {});
+        if (responseEntity2.getStatusCode() != HttpStatus.OK){
+            System.out.println("Request failed with status code: " + responseEntity.getStatusCode());
+            return "redirect:/dashboard";
+        }
+
+        model.addAttribute("storageConditions", responseEntity.getBody());
+        model.addAttribute("storageCreationDTO", new StorageCreationDTO());
+
+        return "storage_creation";
+    }
+
+    @PostMapping("/storage_creation")
+    public String createStorage(@Validated @ModelAttribute("storageCreationDTO") StorageCreationDTO storageCreationDTO, HttpServletRequest httpServletRequest){
+        String token = (String) httpServletRequest.getSession().getAttribute("token");
+        if (token == null) {
+            return "redirect:/auth/login";
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + token);
+        HttpEntity<StorageCreationDTO> requestEntity = new HttpEntity<>(storageCreationDTO, headers);
+
+        ResponseEntity<Object> responseEntity = restTemplate.exchange(api + "/storage", HttpMethod.POST, requestEntity, Object.class);
+
+
+        if (responseEntity.getStatusCode() == HttpStatus.OK) {
+            return "redirect:/dashboard";
+        }
+        System.out.println("Request failed with status code: " + responseEntity.getStatusCode());
+        return "redirect:/dashboard";
     }
 }
