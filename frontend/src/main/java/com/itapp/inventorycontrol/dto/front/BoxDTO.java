@@ -9,11 +9,12 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class StorageItemDTO {
+public class BoxDTO {
     private Long id;
+    private String uuid;
+    private String serialNumber;
     private String itemName;
+    private int amount;
+    private Date creationDate;
     private Date expirationDate;
-    private Double weight;
-    private String storageSpaceName;
-    private String warehouseName;
 }

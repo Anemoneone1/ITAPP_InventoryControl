@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 public class WarehouseDTO {
     private long id;
     private String name;
-    private Double squareSpace;
-    private Double takenSpace;
     private String address;
+    private int warnings;
 }

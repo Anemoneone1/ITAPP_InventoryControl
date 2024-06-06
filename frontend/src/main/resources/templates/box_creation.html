@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Box</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+
+    header p {
+      margin: 5px 0;
+    }
+
+    nav {
+      background-color: #555;
+      padding: 10px;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    nav ul li {
+      margin: 0 10px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    nav ul li a:hover {
+      background-color: #444;
+    }
+
+    main {
+      flex: 1;
+      padding: 20px;
+    }
+
+    h2 {
+      font-size: 24px;
+      color: #444;
+      margin-bottom: 20px;
+    }
+
+    .form-container {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .form-group button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #5cb85c;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .form-group button:hover {
+      background-color: #4cae4c;
+    }
+
+    footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Inventory Management System</h1>
+</header>
+
+<nav>
+  <ul>
+    <li><a th:href="@{/dashboard}">Dashboard</a></li>
+  </ul>
+</nav>
+
+<main>
+  <h2>Create Box</h2>
+  <div class="form-container">
+    <form th:action="@{/create_box}" th:object="${boxCreationDTO}" method="post">
+      <div class="form-group">
+        <label for="storage">Storage:</label>
+        <select id="storage" th:field="*{storageId}">
+          <option th:each="storage : ${storages}" th:value="${storage.id}" th:text="${storage.name}"></option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="serialNumber">Serial Number:</label>
+        <input type="text" id="serialNumber" th:field="*{serialNumber}" required>
+      </div>
+      <div class="form-group">
+        <label for="item">Item:</label>
+        <select id="item" th:field="*{itemId}">
+          <option th:each="item : ${items}" th:value="${item.id}" th:text="${item.name}"></option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="itemNum">Amount:</label>
+        <input type="number" id="itemNum" th:field="*{itemNum}" required>
+      </div>
+      <div class="form-group">
+        <label for="creationDate">Creation Date:</label>
+        <input type="date" id="creationDate" th:field="*{creationDate}" required>
+      </div>
+      <div class="form-group">
+        <button type="submit">Create Box</button>
+      </div>
+    </form>
+  </div>
+</main>
+
+<footer>
+  &copy; 2024 Your Company Name
+</footer>
+
+</body>
+</html>

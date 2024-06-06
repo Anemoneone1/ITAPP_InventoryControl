@@ -1,4 +1,4 @@
-package com.itapp.inventorycontrol.dto.front;
+package com.itapp.inventorycontrol.dto.creation;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,4 +13,5 @@ public class CreateEmployeeDTO {
     private String phone;
     private String name;
     private String surname;
+    private Long companyID;
 }

@@ -1,74 +1,161 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Item List</title>
-  <link rel="stylesheet" href="/styles/styles.css"> <!-- Link to the external CSS file -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+
+    header p {
+      margin: 5px 0;
+    }
+
+    main {
+      flex: 1;
+      padding: 20px;
+    }
+
+    h2 {
+      font-size: 24px;
+      color: #444;
+      margin-bottom: 20px;
+    }
+
+    .item {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .item h3 {
+      font-size: 20px;
+      margin-top: 0;
+    }
+
+    .item p {
+      margin: 5px 0;
+    }
+
+    .item ul {
+      list-style-type: disc;
+      padding-left: 20px;
+    }
+
+    .item button {
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #d9534f;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .item button:hover {
+      background-color: #c9302c;
+    }
+
+    footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+    }
+
+    nav {
+      background-color: #555;
+      padding: 10px;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    nav ul li {
+      margin: 0 10px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    nav ul li a:hover {
+      background-color: #444;
+    }
+  </style>
 </head>
 <body>
 <header>
   <h1>Inventory Management System</h1>
-  <div id="sorting">
-    <label for="sort">Sort By:</label>
-    <select id="sort">
-      <option value="name">Name</option>
-      <option value="size">Size</option>
-      <option value="weight">Weight</option>
-      <option value="expiry_date">Expiry Date</option>
-    </select>
-  </div>
-  <div id="warehouseFilter">
-    <label for="filter">Filter by Warehouse:</label>
-    <select id="filter">
-      <option value="all">All Warehouses</option>
-      <option value="warehouse1">Warehouse 1</option>
-      <option value="warehouse2">Warehouse 2</option>
-      <option value="warehouse3">Warehouse 3</option>
-      <!-- Add more warehouse options as needed -->
-    </select>
-  </div>
 </header>
 
-<main>
-  <h1>Items List</h1>
-  <table>
-    <thead>
-    <tr>
-      <th>Name</th>
-      <th>Expiration Date</th>
-      <th>Weight</th>
-      <th>Container</th>
-      <th>Warehouse</th>
-      <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <!-- Iterate over the list of items -->
-    <tr th:each="item : ${storageItemListDTO}">
-      <td th:text="${item.storageItemName}"></td>
-      <td th:text="${item.expirationDate}"></td>
-      <td th:text="${item.weight}"></td>
-      <td th:text="${item.containerName}"></td>
-      <td th:text="${item.warehouseName}"></td>
-      <td>
-        <!-- Form for delete button -->
-        <form th:action="@{'/delete_item/' + ${item.id}}" method="post">
-          <button type="submit">Delete</button>
-        </form>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+<nav>
+  <ul>
+    <li><a th:href="@{/dashboard}">Dashboard</a></li>
+    <li><a th:href="@{/item/create}">Create Item</a></li>
+  </ul>
+</nav>
 
-  <!-- Button for creating new items -->
-  <div>
-    <a th:href="@{/create_item}"><button>Create New Item</button></a>
+<main>
+  <h2>Item List</h2>
+  <div th:each="item : ${itemList}" class="item">
+    <h3 th:text="${item.name}"></h3>
+    <p><strong>Description:</strong> <span th:text="${item.description}"></span></p>
+    <p><strong>Lifetime:</strong> <span th:text="${item.lifetime}"></span></p>
+
+    <div th:if="${item.compliances.size() > 0}">
+      <h4>Compliances:</h4>
+      <ul>
+        <li th:each="compliance : ${item.compliances}" th:text="${compliance.name}"></li>
+      </ul>
+    </div>
+
+    <div th:if="${item.storageConditions.size() > 0}">
+      <h4>Storage Conditions:</h4>
+      <ul>
+        <li th:each="condition : ${item.storageConditions}" th:text="${condition.condition}"></li>
+      </ul>
+    </div>
+
+    <form th:action="@{'/item/' + ${item.id}}" method="delete">
+      <input type="hidden" name="_method" value="DELETE" />
+      <button type="submit">Delete</button>
+    </form>
   </div>
 </main>
 
 <footer>
   &copy; 2024 Your Company Name
 </footer>
+
 </body>
 </html>

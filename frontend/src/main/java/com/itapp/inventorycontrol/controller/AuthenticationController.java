@@ -6,6 +6,7 @@ import com.itapp.inventorycontrol.dto.front.UserLoginDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,12 +17,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 
-@AllArgsConstructor
 @Controller
 @RequestMapping("/auth")
 public class AuthenticationController {
     private final RestTemplate restTemplate;
+    private final String api;
 
+    public AuthenticationController(RestTemplate restTemplate, @Value("${internal_api}") String api) {
+        this.restTemplate = restTemplate;
+        this.api = api;
+    }
     @GetMapping("/login")
     public String login(Model model, HttpSession httpSession) {
         String token = (String) httpSession.getAttribute("token");
@@ -40,8 +45,7 @@ public class AuthenticationController {
 //        headers.set("Authorization", "Basic " + encodedCredentials);
         HttpEntity<UserLoginDTO> requestEntity = new HttpEntity<>(userLoginDTO);
 
-//        ResponseEntity<TokenDTO> responseEntity = restTemplate.exchange("http://localhost:8081/v1/user/login", HttpMethod.POST, requestEntity, TokenDTO.class);
-        ResponseEntity<TokenDTO> responseEntity = restTemplate.exchange("http://localhost:8081/v1/user/login", HttpMethod.POST, requestEntity, TokenDTO.class);
+        ResponseEntity<TokenDTO> responseEntity = restTemplate.exchange(api + "/user/login", HttpMethod.POST, requestEntity, TokenDTO.class);
 
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
             request.getSession().setAttribute("token", responseEntity.getBody().getToken());
@@ -66,8 +70,7 @@ public class AuthenticationController {
     public String register(@Validated @ModelAttribute("registerDTO") RegisterDTO registerDTO, HttpServletRequest request) {
         HttpEntity<RegisterDTO> requestEntity = new HttpEntity<>(registerDTO);
 
-//        ResponseEntity<TokenDTO> responseEntity = restTemplate.exchange("http://localhost:8081/v1/user/login", HttpMethod.POST, requestEntity, TokenDTO.class);
-        ResponseEntity<TokenDTO> responseEntity = restTemplate.exchange("http://localhost:8081/v1/user/manager", HttpMethod.POST, requestEntity, TokenDTO.class);
+        ResponseEntity<TokenDTO> responseEntity = restTemplate.exchange(api + "/company", HttpMethod.POST, requestEntity, TokenDTO.class);
 
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
             request.getSession().setAttribute("token", responseEntity.getBody().getToken());
