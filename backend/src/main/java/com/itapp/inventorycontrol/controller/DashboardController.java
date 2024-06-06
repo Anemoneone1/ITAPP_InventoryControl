@@ -36,6 +36,8 @@ public class DashboardController {
         Company company = companyService.getByIdOrThrow(signedUser.getCompany().getId());
         dashboard.setCompanyName(company.getName());
 
+        dashboard.setRole(signedUser.getRole());
+
         dashboard.setWarehouses(warehouseService.getAll().stream()
                 .map(warehouseMapper::warehouseToResponse)
                 .collect(Collectors.toList()));

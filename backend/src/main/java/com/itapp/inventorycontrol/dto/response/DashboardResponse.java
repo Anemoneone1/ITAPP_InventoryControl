@@ -1,5 +1,6 @@
 package com.itapp.inventorycontrol.dto.response;
 
+import com.itapp.inventorycontrol.entity.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,5 +14,6 @@ public class DashboardResponse {
     private String userName;
     private String userSurname;
     private String companyName;
+    private UserRole role;
     private List<WarehouseResponse> warehouses;
 }
