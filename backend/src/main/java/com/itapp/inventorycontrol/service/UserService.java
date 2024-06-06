@@ -51,9 +51,15 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(() -> new ICException(ICErrorType.IC_201));
     }
 
-    public List<User> getAll(){
+    public List<User> getAll() {
         User signedUser = signedInUsernameGetter.getUser();
         return userRepository.findAllByCompanyId(signedUser.getCompany().getId());
+    }
+
+    public void changePassword(String newPassword) {
+        User user = signedInUsernameGetter.getUser();
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
     }
 
     private void validateEmployeeInCompany(User manager, User employee) {

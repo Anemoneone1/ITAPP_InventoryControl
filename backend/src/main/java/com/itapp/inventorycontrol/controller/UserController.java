@@ -1,5 +1,6 @@
 package com.itapp.inventorycontrol.controller;
 
+import com.itapp.inventorycontrol.dto.request.EmployeeChangePasswordRequest;
 import com.itapp.inventorycontrol.dto.request.EmployeeCreateRequest;
 import com.itapp.inventorycontrol.dto.request.EmployeeDeleteRequest;
 import com.itapp.inventorycontrol.dto.response.UserResponse;
@@ -62,5 +63,10 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    //TODO: add endpoint to change password
+    @PostMapping("/password")
+    public ResponseEntity<Void> changePassword(@RequestBody EmployeeChangePasswordRequest request) {
+        userService.changePassword(request.getNewPassword());
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
