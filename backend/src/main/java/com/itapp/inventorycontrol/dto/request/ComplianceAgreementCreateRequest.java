@@ -4,13 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class ComplianceAgreementCreateRequest {
     private Long complianceId;
-    private Date start;
-    private Date end;
+    private LocalDate start;
+    private LocalDate end;
 }

@@ -11,7 +11,7 @@ import com.itapp.inventorycontrol.security.SignedInUsernameGetter;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -58,8 +58,8 @@ public class ComplianceAgreementService {
         }
     }
 
-    private void validateEndIsAfterStart(Date start, Date end) {
-        if (!end.after(start)) {
+    private void validateEndIsAfterStart(LocalDate start, LocalDate end) {
+        if (!end.isAfter(start)) {
             throw new ICException(ICErrorType.IC_703);
         }
     }
@@ -77,7 +77,7 @@ public class ComplianceAgreementService {
 
         List<ComplianceAgreement> complianceList = complianceAgreementRepository.findAllByComplianceIdInAndDateBetween(
                 compliances.stream().map(ic -> ic.getCompliance().getId()).toList(),
-                new Date());
+                LocalDate.now());
         if (complianceList.size() != compliances.size()) {
             throw new ICException(ICErrorType.IC_705);
         }

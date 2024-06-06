@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,5 +14,5 @@ public class BoxRequest {
     private String serialNumber;
     private Integer itemNum;
     private Long itemId;
-    private Date creationDate;
+    private LocalDate creationDate;
 }

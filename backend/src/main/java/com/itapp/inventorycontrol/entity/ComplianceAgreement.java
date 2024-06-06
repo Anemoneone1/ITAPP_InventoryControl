@@ -3,7 +3,7 @@ package com.itapp.inventorycontrol.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,8 +22,8 @@ public class ComplianceAgreement {
     private Compliance compliance;
 
     @Column(name = "start", nullable = false)
-    private Date start;
+    private LocalDate start;
 
     @Column(name = "end", nullable = false)
-    private Date end;
+    private LocalDate end;
 }

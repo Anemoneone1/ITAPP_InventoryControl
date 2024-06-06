@@ -11,8 +11,12 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.UUID;
 
 @AllArgsConstructor
 @Service
@@ -60,7 +64,7 @@ public class BoxService {
         box = boxRepository.save(box);
         box.setUuid(UUID.nameUUIDFromBytes(box.getId().toString().getBytes()).toString());
 
-        Date expirationDate = Date.from(request.getCreationDate().toInstant().plus(item.getLifetime(), ChronoUnit.DAYS));
+        LocalDate expirationDate = request.getCreationDate().plus(item.getLifetime(), ChronoUnit.DAYS);
         List<BoxItem> boxItems = new ArrayList<>(request.getItemNum());
         for (int i = 0; i < request.getItemNum(); i++) {
             boxItems.add(BoxItem.builder()

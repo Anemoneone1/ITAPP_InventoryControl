@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -13,8 +13,8 @@ public interface ComplianceAgreementRepository extends JpaRepository<ComplianceA
     List<ComplianceAgreement> findAllByComplianceCompanyId(Long id);
 
     @Query("SELECT ca FROM ComplianceAgreement ca WHERE ca.compliance.id = :complianceId AND ca.end > :currentDate")
-    List<ComplianceAgreement> findAllByComplianceIdAndEndAfter(Long complianceId, Date currentDate);
+    List<ComplianceAgreement> findAllByComplianceIdAndEndAfter(Long complianceId, LocalDate currentDate);
 
     @Query("SELECT ca FROM ComplianceAgreement ca WHERE ca.compliance.id IN :complianceIds AND ca.start < :currentDate AND ca.end > :currentDate")
-    List<ComplianceAgreement> findAllByComplianceIdInAndDateBetween(List<Long> complianceIds, Date currentDate);
+    List<ComplianceAgreement> findAllByComplianceIdInAndDateBetween(List<Long> complianceIds, LocalDate currentDate);
 }
